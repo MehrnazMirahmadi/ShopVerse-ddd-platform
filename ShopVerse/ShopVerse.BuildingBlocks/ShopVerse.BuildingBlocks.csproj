@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ShopVerse.BuildingBlocks\ShopVerse.BuildingBlocks.csproj" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 
 </Project>
