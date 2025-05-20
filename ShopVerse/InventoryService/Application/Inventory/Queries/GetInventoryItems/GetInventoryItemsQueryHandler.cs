@@ -1,8 +1,4 @@
-﻿using Application.Dtos;
-using Domain.Contract;
-using ShopVerse.BuildingBlocks.CQRS;
-
-namespace Application.Inventory.Queries.GetInventoryItems;
+﻿namespace Application.Inventory.Queries.GetInventoryItems;
 
 public class GetInventoryItemsQueryHandler(IUnitOfWork unitOfWork)
     : IQueryHandler<GetInventoryItemsQuery, InventoryItemsResult>

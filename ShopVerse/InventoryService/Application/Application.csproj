@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Inventory\Commands\" />
+    <Folder Include="Inventory\Commands\UpdateInventoryItem\" />
   </ItemGroup>
 
   <ItemGroup>
