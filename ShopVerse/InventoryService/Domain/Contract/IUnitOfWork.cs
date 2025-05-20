@@ -1,6 +1,4 @@
-﻿using Domain.Contract.Repositories;
-
-namespace Domain.Contract;
+﻿namespace Domain.Contract;
 
 public interface IUnitOfWork
 {

@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Domain.Contract.Repositories;
+﻿namespace Domain.Contract.Repositories;
 
 public interface IInventoryItemRepository
 {

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Inventory\Commands\UpdateInventoryItem\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\ShopVerse.BuildingBlocks\ShopVerse.BuildingBlocks.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>

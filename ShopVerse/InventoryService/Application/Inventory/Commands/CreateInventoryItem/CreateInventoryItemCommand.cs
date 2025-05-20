@@ -9,6 +9,7 @@ public class CreateInventoryItemCommandValidator : AbstractValidator<CreateInven
     public CreateInventoryItemCommandValidator()
     {
         RuleFor(x => x.InventoryItem.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.InventoryItem.Quantity).NotEmpty().WithMessage("Quantity is required");
 
     }
 }
