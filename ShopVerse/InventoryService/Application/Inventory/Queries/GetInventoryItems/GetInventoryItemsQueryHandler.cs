@@ -1,6 +1,6 @@
 ﻿namespace Application.Inventory.Queries.GetInventoryItems;
 
-public class GetInventoryItemsQueryHandler : IQueryHandler<GetInventoryItemsQuery, Result<InventoryItemsResult>>
+public class GetInventoryItemsQueryHandler : IQueryHandler<GetInventoryItemsQuery, Result<PaginationResult<InventoryItemDto>>>
 {
     private readonly IUnitOfWork unitOfWork;
 
@@ -9,25 +9,33 @@ public class GetInventoryItemsQueryHandler : IQueryHandler<GetInventoryItemsQuer
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<InventoryItemsResult>> Handle(GetInventoryItemsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PaginationResult<InventoryItemDto>>> Handle(GetInventoryItemsQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var inventoryItems = await unitOfWork.InventoryRepository.GetAllAsync(cancellationToken);
+            // فراخوانی ریپازیتوری با صفحه‌بندی
+            var pagedItems = await unitOfWork.InventoryRepository.GetAllAsync(request.Paging, cancellationToken);
 
-            var inventoryDtos = inventoryItems.Select(i => new InventoryItemDto(
+            // تبدیل InventoryItem به InventoryItemDto
+            var dtoList = pagedItems.Data.Select(i => new InventoryItemDto(
                 i.Id.Value,
                 i.Name,
                 i.Quantity
             )).ToList();
 
-            var resultData = new InventoryItemsResult(inventoryDtos);
+            // ساخت PaginationResult جدید با dto ها
+            var paginatedResult = new PaginationResult<InventoryItemDto>(
+                pagedItems.PageSize,
+                pagedItems.PageNumber,
+                pagedItems.TotalCount,
+                dtoList
+            );
 
-            return Result<InventoryItemsResult>.Success(resultData);
+            return Result<PaginationResult<InventoryItemDto>>.Success(paginatedResult);
         }
         catch (Exception ex)
         {
-            return Result<InventoryItemsResult>.Fail($"Failed to get inventory items: {ex.Message}");
+            return Result<PaginationResult<InventoryItemDto>>.Fail($"Failed to get inventory items: {ex.Message}");
         }
     }
 }

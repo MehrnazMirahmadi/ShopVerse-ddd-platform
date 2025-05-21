@@ -1,4 +1,6 @@
 ﻿using Application.Inventory.Commands.UpdateInventoryItem;
+using Application.Inventory.Queries.GetInventoryItems;
+using ShopVerse.BuildingBlocks.Paging;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -12,15 +14,16 @@ public class InventoryItemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paging, CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(new GetInventoryItemsQuery(), cancellationToken);
+        var result = await _sender.Send(new GetInventoryItemsQuery(paging), cancellationToken);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
 
-        return Ok(result.Value); // فرض بر اینکه Result<T> هست و Value لیست کالاهاست
+        return Ok(result.Value);
     }
+
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateInventoryItemCommand command, CancellationToken cancellationToken)
@@ -30,7 +33,7 @@ public class InventoryItemsController : ControllerBase
         if (!result.IsSuccess)
             return BadRequest(result.Message);
 
-        return CreatedAtAction(nameof(GetAll), new { id = result.Value.id}, result.Value);
+        return CreatedAtAction(nameof(GetAll), new { id = result.Value.id }, result.Value);
     }
 
     [HttpPut("{id:guid}")]

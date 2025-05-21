@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Persistence.Repositories;
+﻿using ShopVerse.BuildingBlocks.Paging;
+
+namespace Infrastructure.Persistence.Repositories;
 
 public class InventoryItemRepository
     (RepositoryPatternDbContext _db)
@@ -9,10 +11,20 @@ public class InventoryItemRepository
         await _db.InventoryItems.AddAsync(item, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<InventoryItem>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<PaginationResult<InventoryItem>> GetAllAsync(PaginationRequest paging, CancellationToken cancellationToken)
     {
-        return await _db.InventoryItems.ToListAsync(cancellationToken);
+        var query = _db.InventoryItems.AsNoTracking();
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .Skip((paging.PageNumber - 1) * paging.PageSize)
+            .Take(paging.PageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PaginationResult<InventoryItem>(paging.PageSize, paging.PageNumber, totalCount, items);
     }
+
 
     public async Task<InventoryItem?> GetByIdAsync(InventoryItemId id, CancellationToken cancellationToken)
     {
