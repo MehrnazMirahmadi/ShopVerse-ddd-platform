@@ -1,7 +1,7 @@
 ﻿namespace Application.Inventory.Commands.CreateInventoryItem;
 
 public record CreateInventoryItemCommand(InventoryItemDto InventoryItem)
-    : ICommand<CreateInventoryItemResult>;
+    : ICommand<Result<CreateInventoryItemResult>>;
 public record CreateInventoryItemResult(Guid id);
 
 public class CreateInventoryItemCommandValidator : AbstractValidator<CreateInventoryItemCommand>

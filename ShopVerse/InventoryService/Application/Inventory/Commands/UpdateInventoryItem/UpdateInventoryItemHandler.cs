@@ -2,25 +2,28 @@
 
 namespace Application.Inventory.Commands.UpdateInventoryItem;
 
-public class UpdateInventoryItemHandler(IUnitOfWork unitOfWork)
-    : ICommandHandler<UpdateInventoryItemCommand, UpdateInventoryItemResult>
+public class UpdateInventoryItemHandler : ICommandHandler<UpdateInventoryItemCommand, Result<UpdateInventoryItemResult>>
 {
-    public async Task<UpdateInventoryItemResult> Handle(UpdateInventoryItemCommand request, CancellationToken cancellationToken)
+    private readonly IUnitOfWork unitOfWork;
+
+    public UpdateInventoryItemHandler(IUnitOfWork unitOfWork)
+    {
+        this.unitOfWork = unitOfWork;
+    }
+
+    public async Task<Result<UpdateInventoryItemResult>> Handle(UpdateInventoryItemCommand request, CancellationToken cancellationToken)
     {
         var item = await unitOfWork.InventoryRepository.GetByIdAsync(
             InventoryItemId.Of(request.inventoryItem.Id), cancellationToken);
 
         if (item is null)
-            throw new InvalidOperationException("Inventory item not found.");
+            return Result<UpdateInventoryItemResult>.Fail("Inventory item not found.");
 
-    
         InventoryItemUpdater.ApplyUpdatesFromDto(item, request.inventoryItem);
 
         await unitOfWork.InventoryRepository.UpdateAsync(item, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-        return new UpdateInventoryItemResult(true);
+        return Result<UpdateInventoryItemResult>.Success(new UpdateInventoryItemResult(true));
     }
 }
-
-

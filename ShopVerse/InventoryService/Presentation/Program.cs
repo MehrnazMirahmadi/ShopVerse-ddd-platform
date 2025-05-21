@@ -1,9 +1,11 @@
+using Presentation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration)
+.AddApplicationServices().AddApiServices();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 

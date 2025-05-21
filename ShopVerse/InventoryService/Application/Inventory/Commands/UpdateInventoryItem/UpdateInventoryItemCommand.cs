@@ -1,7 +1,8 @@
 ﻿namespace Application.Inventory.Commands.UpdateInventoryItem;
 
 public record UpdateInventoryItemCommand(InventoryItemDto inventoryItem)
-    :ICommand<UpdateInventoryItemResult>;
+    : ICommand<Result<UpdateInventoryItemResult>>;
+
 public record UpdateInventoryItemResult(bool IsSuccess);
 
 public class UpdateInventoryItemCommandValidator : AbstractValidator<UpdateInventoryItemCommand>
