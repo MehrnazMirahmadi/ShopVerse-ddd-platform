@@ -1,14 +1,14 @@
 ﻿namespace Infrastructure.Persistence.Context;
 
-public class RepositoryPatternDbContext : DbContext
+public class InventoryDbContext : DbContext
 {
-    public RepositoryPatternDbContext(DbContextOptions<RepositoryPatternDbContext> options)
+    public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
         : base(options)
     {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RepositoryPatternDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(InventoryDbContext).Assembly);
     }
 
     public DbSet<InventoryItem> InventoryItems { get; set; } = null!;

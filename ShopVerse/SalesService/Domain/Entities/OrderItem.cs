@@ -1,21 +1,22 @@
-﻿using Domain.ValueObjects;
-using ShopVerse.BuildingBlocks.Abstractions;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class OrderItem : Entity<OrderItemId>
 {
-    public OrderItem(OrderId orderId, ProductId productId, int quantity, decimal price)
+    private OrderItem() { } // برای EF Core
+
+    public OrderItemId Id { get; private set; } = default!;
+    public OrderId OrderId { get; private set; } = default!;
+    public ProductId ProductId { get; private set; } = default!;
+    public int Quantity { get; private set; } = default!;
+    public Money Price { get; private set; } = default!;
+
+    // برای EF Core نیاز نیست constructor public باشه، چون Service وظیفه ساخت داره
+    internal OrderItem(OrderItemId id, OrderId orderId, ProductId productId, int quantity, Money price)
     {
-        Id = OrderItemId.Of(Guid.NewGuid());
+        Id = id;
         OrderId = orderId;
         ProductId = productId;
         Quantity = quantity;
         Price = price;
-
     }
-    public OrderId OrderId { get; private set; } = default!;
-    public ProductId ProductId { get; private set; } = default!;
-    public int Quantity { get; private set; } = default!;
-    public decimal Price { get; private set; } = default!;
 }

@@ -1,7 +1,7 @@
 ﻿namespace Infrastructure.Persistence;
 
 public class UnitOfWork
-    (RepositoryPatternDbContext context
+    (InventoryDbContext context
     , IInventoryItemRepository inventoryItemRepository)
     : IUnitOfWork, IDisposable
 {

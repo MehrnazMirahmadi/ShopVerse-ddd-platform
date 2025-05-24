@@ -4,7 +4,7 @@ using ShopVerse.BuildingBlocks.Specifications;
 namespace Infrastructure.Persistence.Repositories;
 
 public class InventoryItemRepository
-    (RepositoryPatternDbContext _db)
+    (InventoryDbContext _db)
     : IInventoryItemRepository
 {
     public async Task AddAsync(InventoryItem item, CancellationToken cancellationToken)

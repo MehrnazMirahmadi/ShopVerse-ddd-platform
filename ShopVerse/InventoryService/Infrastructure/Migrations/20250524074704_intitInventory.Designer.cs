@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
-    [DbContext(typeof(RepositoryPatternDbContext))]
-    [Migration("20250519115713_init-inventory")]
-    partial class initinventory
+    [DbContext(typeof(InventoryDbContext))]
+    [Migration("20250524074704_intitInventory")]
+    partial class intitInventory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
