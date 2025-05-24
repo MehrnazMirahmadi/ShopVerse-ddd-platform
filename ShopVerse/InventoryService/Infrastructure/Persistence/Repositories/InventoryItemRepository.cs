@@ -1,4 +1,5 @@
 ﻿using ShopVerse.BuildingBlocks.Paging;
+using ShopVerse.BuildingBlocks.Specifications;
 
 namespace Infrastructure.Persistence.Repositories;
 
@@ -10,26 +11,88 @@ public class InventoryItemRepository
     {
         await _db.InventoryItems.AddAsync(item, cancellationToken);
     }
-
-    public async Task<PaginationResult<InventoryItem>> GetAllAsync(PaginationRequest paging, CancellationToken cancellationToken)
+    public async Task<PaginationResult<InventoryItem>> GetAllAsync(
+    BaseSpecification<InventoryItem> specification,
+    CancellationToken cancellationToken)
     {
-        var query = _db.InventoryItems.AsNoTracking();
+        var query = _db.InventoryItems.AsQueryable();
 
+        // اعمال criteria از specification
+        if (specification.Criteria != null)
+            query = query.Where(specification.Criteria);
+
+        // اعمال Includes اگر داشت
+        foreach (var include in specification.Includes)
+            query = query.Include(include);
+
+        // اعمال مرتب سازی
+        if (specification.OrderBy != null)
+            query = query.OrderBy(specification.OrderBy);
+        else if (specification.OrderByDescending != null)
+            query = query.OrderByDescending(specification.OrderByDescending);
+
+        // شمارش کل برای pagination
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var items = await query
-            .Skip((paging.PageNumber - 1) * paging.PageSize)
-            .Take(paging.PageSize)
-            .ToListAsync(cancellationToken);
+        // اعمال paging
+        if (specification.Skip.HasValue && specification.Take.HasValue)
+            query = query.Skip(specification.Skip.Value).Take(specification.Take.Value);
 
-        return new PaginationResult<InventoryItem>(paging.PageSize, paging.PageNumber, totalCount, items);
+        var items = await query.AsNoTracking().ToListAsync(cancellationToken);
+
+        return new PaginationResult<InventoryItem>(
+            specification.Take ?? totalCount,
+            specification.Skip.HasValue ? (specification.Skip.Value / (specification.Take ?? totalCount) + 1) : 1,
+            totalCount,
+            items);
     }
-
 
     public async Task<InventoryItem?> GetByIdAsync(InventoryItemId id, CancellationToken cancellationToken)
     {
         return await _db.InventoryItems
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async Task<PaginationResult<InventoryItem>> GetBySpecificationAsync(
+      BaseSpecification<InventoryItem> spec,
+      CancellationToken cancellationToken)
+    {
+        var query = _db.InventoryItems.AsQueryable();
+
+        // اعمال Criteria (فیلترها)
+        if (spec.Criteria != null)
+            query = query.Where(spec.Criteria);
+
+        // اعمال Includes (شامل روابط)
+        foreach (var include in spec.Includes)
+            query = query.Include(include);
+
+        // اعمال OrderBy و OrderByDescending
+        if (spec.OrderBy != null)
+            query = query.OrderBy(spec.OrderBy);
+        else if (spec.OrderByDescending != null)
+            query = query.OrderByDescending(spec.OrderByDescending);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        // اعمال پیجینگ
+        if (spec.Skip.HasValue)
+            query = query.Skip(spec.Skip.Value);
+        if (spec.Take.HasValue)
+            query = query.Take(spec.Take.Value);
+
+        var data = await query.ToListAsync(cancellationToken);
+
+        // محاسبه PageNumber بر اساس skip و take
+        int pageNumber = 1;
+        if (spec.Skip.HasValue && spec.Take.HasValue && spec.Take != 0)
+            pageNumber = (spec.Skip.Value / spec.Take.Value) + 1;
+
+        return new PaginationResult<InventoryItem>(
+            spec.Take ?? totalCount,
+            pageNumber,
+            totalCount,
+            data);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

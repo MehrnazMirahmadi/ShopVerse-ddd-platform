@@ -1,3 +1,11 @@
 ﻿namespace ShopVerse.BuildingBlocks.Paging;
 
-public record PaginationRequest(int PageNumber = 1, int PageSize = 10);
+public class PaginationRequest
+{
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+
+    public string? FilterName { get; set; } 
+    public bool SortByQuantityDesc { get; set; } = false; 
+}
+

@@ -12,18 +12,20 @@ public class InventoryItemsController : ControllerBase
     {
         _sender = sender;
     }
-
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paging, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll(
+    [FromQuery] PaginationRequest paging,
+    CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(new GetInventoryItemsQuery(paging), cancellationToken);
+        var result = await _sender.Send(
+            new GetInventoryItemsQuery(paging),
+            cancellationToken);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
 
         return Ok(result.Value);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateInventoryItemCommand command, CancellationToken cancellationToken)
