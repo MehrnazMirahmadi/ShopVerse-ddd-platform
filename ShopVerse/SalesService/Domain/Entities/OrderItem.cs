@@ -10,7 +10,6 @@ public class OrderItem : Entity<OrderItemId>
     public int Quantity { get; private set; } = default!;
     public Money Price { get; private set; } = default!;
 
-    // برای EF Core نیاز نیست constructor public باشه، چون Service وظیفه ساخت داره
     internal OrderItem(OrderItemId id, OrderId orderId, ProductId productId, int quantity, Money price)
     {
         Id = id;

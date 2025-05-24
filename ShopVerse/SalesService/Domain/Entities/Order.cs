@@ -13,7 +13,7 @@ public class Order : Aggregate<OrderId>
     public Payment Payment { get; private set; } = default!;
     public OrderStatus Status { get; private set; } = OrderStatus.Pending;
 
-    private Order() { } // برای EF Core
+    private Order() { }
 
     internal Order(OrderId id, CustomerId customerId, OrderName orderName,
                    Address shippingAddress, Address billingAddress,

@@ -1,5 +1,7 @@
-﻿using Infrastructure.Persistence;
+﻿using Domain.Contract.Repositories;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +16,7 @@ public static class DependencyInjection
         services.AddDbContext<OrderDbContext>(options =>
            options.UseSqlServer(connectionString));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        //  services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
         return services;
     }
 }
