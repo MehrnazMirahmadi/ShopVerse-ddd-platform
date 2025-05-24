@@ -1,35 +1,65 @@
 ﻿using Domain.Contract.Repositories;
+using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork (OrderDbContext context, IOrderRepository orderRepository)
+    : IUnitOfWork, IDisposable
 {
-    public IOrderRepository OrderRepository => throw new NotImplementedException();
 
-    public bool HasActiveTransaction => throw new NotImplementedException();
+    private IDbContextTransaction? _transaction;
 
-    public Task BeginTransactionAsync()
+   
+
+    public IOrderRepository OrderRepository => orderRepository;
+
+    public bool HasActiveTransaction => _transaction != null;
+
+    public async Task BeginTransactionAsync()
     {
-        throw new NotImplementedException();
+        if (_transaction == null)
+            _transaction = await context.Database.BeginTransactionAsync();
     }
 
     public void Commit()
     {
-        throw new NotImplementedException();
+        _transaction?.Commit();
     }
 
-    public Task CommitAsync()
+    public async Task CommitAsync()
     {
-        throw new NotImplementedException();
+        if (_transaction != null)
+        {
+            await _transaction.CommitAsync();
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
     }
 
-    public Task RollbackAsync()
+    public IDbContextTransaction? GetCurrentTransaction()
     {
-        throw new NotImplementedException();
+        return _transaction;
     }
 
-    public Task SaveChangesAsync()
+    public async Task RollbackAsync()
     {
-        throw new NotImplementedException();
+        if (_transaction != null)
+        {
+            await _transaction.RollbackAsync();
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    public void Dispose()
+    {
+        _transaction?.Dispose();
+        context.Dispose();
     }
 }

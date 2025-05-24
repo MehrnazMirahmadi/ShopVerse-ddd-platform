@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.BuildingBlocks", "ShopVerse.BuildingBlocks\ShopVerse.BuildingBlocks.csproj", "{241742A7-BA09-4990-8106-7F95A5E8354E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.BuildingBlocks.Messaging", "ShopVerse.BuildingBlocks.Messaging\ShopVerse.BuildingBlocks.Messaging\ShopVerse.BuildingBlocks.Messaging.csproj", "{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{241742A7-BA09-4990-8106-7F95A5E8354E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{241742A7-BA09-4990-8106-7F95A5E8354E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{241742A7-BA09-4990-8106-7F95A5E8354E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{85D908DE-B157-4A22-B1C5-F4D19D4EBFBD} = {1ABBE697-0C3B-4DFC-B5F1-AC035A13DD23}
 		{EAC231A5-8F4E-46E9-A38E-92F217E77175} = {1ABBE697-0C3B-4DFC-B5F1-AC035A13DD23}
 		{241742A7-BA09-4990-8106-7F95A5E8354E} = {17704685-6989-4EEA-B0BB-B9358BF221A3}
+		{A3FB1E64-ADFD-4B7E-BCF9-2BBB1D5C6CA1} = {17704685-6989-4EEA-B0BB-B9358BF221A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D54F8DE2-4AC3-4BB4-9DF8-5BF75F715D84}

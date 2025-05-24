@@ -1,6 +1,3 @@
-﻿namespace Application
-{
-    internal class GlobalUsing
-    {
-    }
-}
+﻿global using Application.Dtos;
+global using FluentValidation;
+global using ShopVerse.BuildingBlocks.CQRS;

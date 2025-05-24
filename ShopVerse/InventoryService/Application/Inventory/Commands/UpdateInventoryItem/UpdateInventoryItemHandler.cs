@@ -21,7 +21,7 @@ public class UpdateInventoryItemHandler : ICommandHandler<UpdateInventoryItemCom
 
         InventoryItemUpdater.ApplyUpdatesFromDto(item, request.inventoryItem);
 
-        await unitOfWork.InventoryRepository.UpdateAsync(item, cancellationToken);
+        await unitOfWork.InventoryRepository.Update(item, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
         return Result<UpdateInventoryItemResult>.Success(new UpdateInventoryItemResult(true));

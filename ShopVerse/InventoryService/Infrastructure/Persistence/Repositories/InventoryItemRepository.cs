@@ -17,24 +17,21 @@ public class InventoryItemRepository
     {
         var query = _db.InventoryItems.AsQueryable();
 
-        // اعمال criteria از specification
         if (specification.Criteria != null)
             query = query.Where(specification.Criteria);
 
-        // اعمال Includes اگر داشت
+      
         foreach (var include in specification.Includes)
             query = query.Include(include);
 
-        // اعمال مرتب سازی
         if (specification.OrderBy != null)
             query = query.OrderBy(specification.OrderBy);
         else if (specification.OrderByDescending != null)
             query = query.OrderByDescending(specification.OrderByDescending);
 
-        // شمارش کل برای pagination
         var totalCount = await query.CountAsync(cancellationToken);
 
-        // اعمال paging
+    
         if (specification.Skip.HasValue && specification.Take.HasValue)
             query = query.Skip(specification.Skip.Value).Take(specification.Take.Value);
 
@@ -100,9 +97,8 @@ public class InventoryItemRepository
         await _db.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(InventoryItem item, CancellationToken cancellationToken)
+    public async Task Update(InventoryItem item, CancellationToken cancellationToken)
     {
         _db.InventoryItems.Update(item);
-        await _db.SaveChangesAsync(cancellationToken);
     }
 }
