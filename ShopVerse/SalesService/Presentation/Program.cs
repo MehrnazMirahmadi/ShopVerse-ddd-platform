@@ -1,5 +1,8 @@
 using Application;
+using Application.GrpcInterface;
 using Infrastructure;
+using InventoryGrpc;
+using Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,13 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+// Register gRPC service client (if this is a gRPC client consumer)
+builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
+{
+    o.Address = new Uri("https://localhost:7107");
+});
+builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

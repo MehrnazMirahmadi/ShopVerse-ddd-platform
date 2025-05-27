@@ -101,4 +101,16 @@ public class InventoryItemRepository
     {
         _db.InventoryItems.Update(item);
     }
+    public async Task<bool> GetAvailableQuantityAsync(ProductId productId, int quantity)
+    {
+       
+        var inventoryItem = await _db.InventoryItems
+            .FirstOrDefaultAsync(x => x.ProductId == productId);
+
+        if (inventoryItem is null)
+            return false;
+
+        return inventoryItem.Quantity >= quantity;
+    }
+
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Contract;
+﻿using Application.GrpcInterface;
+using Domain.Contract;
 using Domain.Entities;
 using Domain.ValueObjects;
 
@@ -12,12 +13,20 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
         RuleFor(x => x.Order.OrderItems).NotEmpty().WithMessage("OrderItems should not be empty");
     }
 }
-public class CreateOrderCommandHandler(IUnitOfWork unitOfWork)
+public class CreateOrderCommandHandler(IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)
     : ICommandHandler<CreateOrderCommand, CreateOrderResult>
 {
 
     public async Task<CreateOrderResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
+        foreach (var item in request.Order.OrderItems)
+        {
+            var isAvailable = await inventoryClient.IsProductAvailableAsync(item.ProductId, item.Quantity);
+            if (!isAvailable)
+            {
+                throw new Exception($"موجودی محصول {item.ProductId} کافی نیست.");
+            }
+        }
         var dto = request.Order;
 
         var shippingAddress = Address.Of(

@@ -1,4 +1,5 @@
 using Presentation;
+using Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration)
 .AddApplicationServices().AddApiServices();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -23,6 +25,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<InventoryServiceImpl>();
+app.MapGet("/", () => "This service is for gRPC only.");
 
 app.Run();
 

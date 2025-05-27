@@ -4,6 +4,7 @@ public class InventoryItem : Aggregate<InventoryItemId>
 {
     public string Name { get; private set; } = default!;
     public int Quantity { get; private set; }
+    public Guid ProductId { get; private set; }
 
     private InventoryItem() { }
 
