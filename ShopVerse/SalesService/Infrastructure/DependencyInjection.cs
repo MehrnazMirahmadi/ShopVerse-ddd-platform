@@ -1,6 +1,4 @@
-﻿using Domain.Contract.Repositories;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Context;
+﻿using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

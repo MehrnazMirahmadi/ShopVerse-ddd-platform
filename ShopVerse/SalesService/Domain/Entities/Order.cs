@@ -27,9 +27,20 @@ public class Order : Aggregate<OrderId>
         Payment = payment;
         Status = status;
     }
+    public static Order Create(
+    OrderId id, CustomerId customerId, OrderName orderName,
+    Address shippingAddress, Address billingAddress,
+    Payment payment, OrderStatus status = OrderStatus.Pending)
+    {
+        return new Order(id, customerId, orderName, shippingAddress, billingAddress, payment, status);
+    }
+    internal void AddOrderItem(OrderItemId id, ProductId productId, int quantity, Money price)
+    {
+        var item = OrderItem.Create(id, this.Id, productId, quantity, price);
+        _orderItems.Add(item);
+    }
 
- 
-    internal void SetOrderItems(IEnumerable<OrderItem> items)
+    public void SetOrderItems(IEnumerable<OrderItem> items)
     {
         _orderItems.Clear();
         _orderItems.AddRange(items);

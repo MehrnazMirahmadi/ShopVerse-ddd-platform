@@ -1,7 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Enums;
-using Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
@@ -15,15 +12,15 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(o => o.Id)
        .HasConversion(
-           id => id.Value,                     
-           value => OrderId.Of(value))         
+           id => id.Value,
+           value => OrderId.Of(value))
        .ValueGeneratedNever();
 
         // CustomerId mapping
         builder.Property(o => o.CustomerId)
         .HasConversion(
-            id => id.Value,                      
-            value => CustomerId.Of(value));     
+            id => id.Value,
+            value => CustomerId.Of(value));
 
 
         // OrderName as value object
@@ -92,6 +89,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                .WithOne()
                .HasForeignKey(oi => oi.OrderId);
 
-       
+
     }
 }

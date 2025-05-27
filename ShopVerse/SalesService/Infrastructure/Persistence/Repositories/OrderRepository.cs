@@ -1,11 +1,8 @@
-﻿using Domain.Contract.Repositories;
-using Infrastructure.Persistence.Context;
-
-namespace Infrastructure.Persistence.Repositories;
+﻿namespace Infrastructure.Persistence.Repositories;
 
 public class OrderRepository(OrderDbContext context) : IOrderRepository
 {
-   
+
     public async Task AddOrderAsync(Order order, CancellationToken cancellationToken = default)
     {
         await context.Orders.AddAsync(order, cancellationToken);
