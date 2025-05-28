@@ -12,23 +12,23 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["InventoryService/Presentation/Inventory.Presentation.csproj", "InventoryService/Presentation/"]
+COPY ["InventoryService/Presentation/Presentation.csproj", "InventoryService/Presentation/"]
 COPY ["InventoryService/Application/Application.csproj", "InventoryService/Application/"]
 COPY ["ShopVerse.BuildingBlocks/ShopVerse.BuildingBlocks.csproj", "ShopVerse.BuildingBlocks/"]
 COPY ["InventoryService/Domain/Domain.csproj", "InventoryService/Domain/"]
 COPY ["InventoryService/Infrastructure/Infrastructure.csproj", "InventoryService/Infrastructure/"]
-RUN dotnet restore "./InventoryService/Presentation/Inventory.Presentation.csproj"
+RUN dotnet restore "./InventoryService/Presentation/Presentation.csproj"
 COPY . .
 WORKDIR "/src/InventoryService/Presentation"
-RUN dotnet build "./Inventory.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Inventory.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Inventory.Presentation.dll"]
+ENTRYPOINT ["dotnet", "Presentation.dll"]

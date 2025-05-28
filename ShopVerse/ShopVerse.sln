@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "InventorySer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "InventoryService\Infrastructure\Infrastructure.csproj", "{CDE96A63-956B-4626-A06E-332702443257}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "InventoryService\Presentation\Presentation.csproj", "{0D54461C-DCCD-4C2A-9EF5-FC1AF8181B38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Presentation", "InventoryService\Presentation\Inventory.Presentation.csproj", "{0D54461C-DCCD-4C2A-9EF5-FC1AF8181B38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesService", "SalesService", "{1ABBE697-0C3B-4DFC-B5F1-AC035A13DD23}"
 EndProject

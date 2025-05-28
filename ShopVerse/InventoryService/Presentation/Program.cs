@@ -1,5 +1,5 @@
 using Presentation;
-using Presentation.GrpcServices;
+using Inventory.Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -3,7 +3,7 @@ using Domain.ValueObjects;
 using Grpc.Core;
 using InventoryGrpc;
 
-namespace Presentation.GrpcServices;
+namespace Inventory.Presentation.GrpcServices;
 
 public class InventoryServiceImpl(IInventoryItemRepository inventoryRepository) : InventoryService.InventoryServiceBase
 {
