@@ -3,7 +3,6 @@ using Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration)
 .AddApplicationServices().AddApiServices();
@@ -12,6 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
