@@ -1,7 +1,9 @@
 using Application;
 using Application.GrpcInterface;
 using Infrastructure;
+using Infrastructure.Persistence.Context;
 using InventoryGrpc;
+using Microsoft.EntityFrameworkCore;
 using Presentation.GrpcServices;
 
 
@@ -21,7 +23,11 @@ builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
 });
 builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    dbContext.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

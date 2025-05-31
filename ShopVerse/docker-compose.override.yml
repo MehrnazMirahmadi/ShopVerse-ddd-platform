@@ -5,6 +5,8 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Server=inventorydb;Database=InventoryDb;User Id=sa;Password=SwN12345678;TrustServerCertificate=True
+    depends_on:
+      - inventorydb
     ports:
       - "6001:8080"
       - "6061:8081"

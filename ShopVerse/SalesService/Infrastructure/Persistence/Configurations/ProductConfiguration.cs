@@ -10,5 +10,7 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Id).HasConversion(id => id.Value,
             value => ProductId.Of(value))
             .ValueGeneratedNever();
+        builder.Property(p => p.Price)
+        .HasPrecision(18, 4);
     }
 }
