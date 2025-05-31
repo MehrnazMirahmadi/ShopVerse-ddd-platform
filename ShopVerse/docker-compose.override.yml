@@ -1,4 +1,34 @@
 services:
+  inventorydb :
+    container_name: inventorydb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SwN12345678
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tuln | grep 1433 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+    ports:
+      - "1434:1433"  
+    volumes:
+      - inventorydbdata:/var/opt/mssql
+  orderdb :
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SwN12345678
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tuln | grep 1433 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - orderdbdata:/var/opt/mssql
   inventoryservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -27,8 +57,14 @@ services:
       - MessageBroker__Password=guest
     depends_on:
       - orderdb
-      - messagebroker
       - inventoryservice
+      - messagebroker
+      # orderdb :
+      #   condition: service_healthy
+      # inventoryservice:
+      #  condition: service_started
+      # messagebroker:
+      #   condition: service_started
     ports:
       - "6000:8080"
       - "6060:8081"
@@ -37,21 +73,7 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    
-  orderdb :
-    container_name: orderdb
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=SwN12345678
-    restart: always
-    ports:
-      - "1433:1433"
- 
-  inventorydb :
-    container_name: inventorydb
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=SwN12345678
-    restart: always
-    ports:
-      - "1434:1433"  
+     
+volumes:
+  orderdbdata:
+  inventorydbdata:

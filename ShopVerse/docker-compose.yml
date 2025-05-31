@@ -1,9 +1,8 @@
 services:
-  orderdb:
-    image: mcr.microsoft.com/mssql/server
   inventorydb:
     image: mcr.microsoft.com/mssql/server
-
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
   inventoryservice:
     image: ${DOCKER_REGISTRY-}inventoryapi
     build:

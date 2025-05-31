@@ -1,4 +1,4 @@
-using Application;
+﻿using Application;
 using Application.GrpcInterface;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
@@ -17,17 +17,28 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 // Register gRPC service client (if this is a gRPC client consumer)
-builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
+//builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
+//{
+//    o.Address = new Uri("https://localhost:5051");
+
+//});
+builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(options =>
 {
-    o.Address = new Uri("https://localhost:5051");
+    options.Address = new Uri(builder.Configuration["GrpcSettings:InventoryUrl"]!);
 });
+
 builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
+
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
-    dbContext.Database.Migrate();
+    await dbContext.Database.MigrateAsync();
 }
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -36,10 +47,10 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("/health");
 app.Run();
