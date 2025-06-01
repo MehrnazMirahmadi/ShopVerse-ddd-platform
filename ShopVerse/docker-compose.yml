@@ -15,7 +15,3 @@ services:
       context: .
       dockerfile: SalesService/Presentation/Dockerfile
 
-  messagebroker :
-    image: rabbitmq:3-management
- 
- 

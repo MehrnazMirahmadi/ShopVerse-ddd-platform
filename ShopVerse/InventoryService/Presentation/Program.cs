@@ -1,4 +1,6 @@
-﻿using Presentation;
+﻿using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+using Presentation;
 //using Inventory.Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +19,7 @@ var app = builder.Build();
 //using (var scope = app.Services.CreateScope())
 //{
 //    var dbContext = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
-//    await dbContext.Database.MigrateAsync();
+//    dbContext.Database.Migrate();
 //}
 
 // Configure the HTTP request pipeline.
