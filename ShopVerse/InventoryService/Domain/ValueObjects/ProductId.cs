@@ -2,7 +2,7 @@
 public sealed record ProductId
 {
     public Guid Value { get; }
-
+    private ProductId() { }
     private ProductId(Guid value)
     {
         Value = value;

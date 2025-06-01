@@ -3,7 +3,7 @@
 public sealed record InventoryItemId
 {
     public Guid Value { get; }
-
+    
     private InventoryItemId(Guid value)
     {
         Value = value;

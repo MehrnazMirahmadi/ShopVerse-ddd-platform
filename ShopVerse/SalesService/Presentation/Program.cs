@@ -1,10 +1,11 @@
 ﻿using Application;
-using Application.GrpcInterface;
+//using InventoryGrpc;
+//using Application.GrpcInterface;
+//using Presentation.GrpcServices;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
-using InventoryGrpc;
 using Microsoft.EntityFrameworkCore;
-using Presentation.GrpcServices;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,14 +23,14 @@ builder.Services.AddSwaggerGen();
 //    o.Address = new Uri("https://localhost:5051");
 
 //});
-builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(options =>
-{
-    options.Address = new Uri(builder.Configuration["GrpcSettings:InventoryUrl"]!);
-});
+//builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(options =>
+//{
+//    options.Address = new Uri(builder.Configuration["GrpcSettings:InventoryUrl"]!);
+//});
 
-builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
-builder.Services.AddHealthChecks()
-    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
+//builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
+//builder.Services.AddHealthChecks()
+//    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
@@ -52,5 +53,5 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHealthChecks("/health");
+//app.MapHealthChecks("/health");
 app.Run();

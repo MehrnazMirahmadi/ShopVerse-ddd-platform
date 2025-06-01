@@ -1,3 +1,4 @@
+
 services:
   inventorydb :
     container_name: inventorydb
@@ -5,7 +6,7 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=SwN12345678
     healthcheck:
-      test: ["CMD-SHELL", "netstat -tuln | grep 1433 || exit 1"]
+      test: ["CMD-SHELL", "echo > /dev/tcp/localhost/1433"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -20,7 +21,7 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=SwN12345678
     healthcheck:
-      test: ["CMD-SHELL", "netstat -tuln | grep 1433 || exit 1"]
+      test: ["CMD-SHELL", "echo > /dev/tcp/localhost/1433"]
       interval: 30s
       timeout: 10s
       retries: 10
@@ -56,15 +57,15 @@ services:
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
     depends_on:
-      - orderdb
-      - inventoryservice
-      - messagebroker
-      # orderdb :
-      #   condition: service_healthy
-      # inventoryservice:
-      #  condition: service_started
-      # messagebroker:
-      #   condition: service_started
+      # - orderdb
+      # - inventoryservice
+      # - messagebroker
+      orderdb :
+        condition: service_healthy
+      inventoryservice:
+       condition: service_started
+      messagebroker:
+        condition: service_started
     ports:
       - "6000:8080"
       - "6060:8081"

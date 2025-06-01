@@ -20,7 +20,7 @@ public class InventoryItemRepository
         if (specification.Criteria != null)
             query = query.Where(specification.Criteria);
 
-      
+
         foreach (var include in specification.Includes)
             query = query.Include(include);
 
@@ -31,7 +31,7 @@ public class InventoryItemRepository
 
         var totalCount = await query.CountAsync(cancellationToken);
 
-    
+
         if (specification.Skip.HasValue && specification.Take.HasValue)
             query = query.Skip(specification.Skip.Value).Take(specification.Take.Value);
 
@@ -103,14 +103,20 @@ public class InventoryItemRepository
     }
     public async Task<bool> GetAvailableQuantityAsync(ProductId productId, int quantity)
     {
-       
+
         var inventoryItem = await _db.InventoryItems
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ProductId == productId);
 
         if (inventoryItem is null)
             return false;
 
-        return inventoryItem.Quantity >= quantity;
+        return inventoryItem != null && inventoryItem.Quantity >= quantity;
     }
 
+    public async Task<InventoryItem?> GetByProductIdAsync(ProductId productId, CancellationToken cancellationToken = default)
+    {
+        return await _db.InventoryItems
+            .FirstOrDefaultAsync(x => x.ProductId == productId, cancellationToken);
+    }
 }

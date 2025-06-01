@@ -7,13 +7,25 @@ public class CreateInventoryItemHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            var itemId = InventoryItemId.New();
+            var productId = ProductId.Of(request.InventoryItem.ProductId);
 
+            var existingItem = await unitOfWork.InventoryRepository
+                .GetByProductIdAsync(productId, cancellationToken);
+            if (existingItem != null) {
+                existingItem.IncreaseQuantity(request.InventoryItem.Quantity);
+                await unitOfWork.SaveChangesAsync();
+                return Result<CreateInventoryItemResult>.Success(
+                   new CreateInventoryItemResult(existingItem.Id.Value),
+                   "Quantity updated successfully");
+            }
+            var itemId = InventoryItemId.New();
+            var productid = request.InventoryItem.ProductId;
             var item = new InventoryItem(
-                itemId,
-                request.InventoryItem.Name,
-                request.InventoryItem.Quantity
-            );
+                 itemId,
+                 request.InventoryItem.Name,
+                 request.InventoryItem.Quantity,
+                 productId
+             );
 
 
             await unitOfWork.InventoryRepository.AddAsync(item, cancellationToken);
@@ -25,7 +37,7 @@ public class CreateInventoryItemHandler(IUnitOfWork unitOfWork)
         }
         catch (Exception ex)
         {
-            // اگر خطایی پیش اومد، پیام مناسب رو برگردون
+        
             return Result<CreateInventoryItemResult>.Fail($"Error creating item: {ex.Message}");
         }
     }

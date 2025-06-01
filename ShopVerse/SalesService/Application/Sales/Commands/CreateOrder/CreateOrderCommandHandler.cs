@@ -1,10 +1,13 @@
-﻿using Application.GrpcInterface;
+﻿//using Application.GrpcInterface;
+using Application.Contracts;
 using Domain.Contract;
 using Domain.Entities;
 using Domain.ValueObjects;
+using ShopVerse.BuildingBlocks.Result;
 
 namespace Application.Sales.Commands.CreateOrder;
-public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
+public class CreateOrderCommandValidator 
+    : AbstractValidator<CreateOrderCommand>
 {
     public CreateOrderCommandValidator()
     {
@@ -13,20 +16,31 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
         RuleFor(x => x.Order.OrderItems).NotEmpty().WithMessage("OrderItems should not be empty");
     }
 }
-public class CreateOrderCommandHandler(IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)
+public class CreateOrderCommandHandler(IUnitOfWork unitOfWork, IInventoryApiClient inventoryApiClient)//, IInventoryServiceClient inventoryClient
     : ICommandHandler<CreateOrderCommand, CreateOrderResult>
 {
 
     public async Task<CreateOrderResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
+        //foreach (var item in request.Order.OrderItems)
+        //{
+        //    var isAvailable = await inventoryClient.IsProductAvailableAsync(item.ProductId, item.Quantity);
+        //    if (!isAvailable)
+        //    {
+        //        throw new Exception($"موجودی محصول {item.ProductId} کافی نیست.");
+        //    }
+        //}
         foreach (var item in request.Order.OrderItems)
         {
-            var isAvailable = await inventoryClient.IsProductAvailableAsync(item.ProductId, item.Quantity);
+            bool isAvailable = await inventoryApiClient.CheckProductAvailabilityAsync(item.ProductId, item.Quantity);
+
             if (!isAvailable)
             {
-                throw new Exception($"موجودی محصول {item.ProductId} کافی نیست.");
+                return new CreateOrderResult(false, null, $"محصول با شناسه {item.ProductId} به اندازه کافی موجود نیست.");
             }
         }
+
+
         var dto = request.Order;
 
         var shippingAddress = Address.Of(
@@ -76,6 +90,6 @@ public class CreateOrderCommandHandler(IUnitOfWork unitOfWork, IInventoryService
         await unitOfWork.OrderRepository.AddOrderAsync(order, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-        return new CreateOrderResult(order.Id.Value);
+        return new CreateOrderResult(true, null, order.Id.Value.ToString());
     }
 }

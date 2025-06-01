@@ -14,7 +14,12 @@ public class InventoryItemConfiguration : IEntityTypeConfiguration<InventoryItem
                 value => InventoryItemId.Of(value)
             )
             .ValueGeneratedNever();
-
+        builder.Property(x => x.ProductId)
+            .HasConversion(
+                id => id.Value,
+                value => ProductId.Of(value)
+            )
+            .IsRequired();
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Quantity).IsRequired();
     }

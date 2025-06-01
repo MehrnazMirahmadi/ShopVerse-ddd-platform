@@ -1,7 +1,5 @@
 ﻿using Presentation;
-using Inventory.Presentation.GrpcServices;
-using Infrastructure.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
+//using Inventory.Presentation.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,17 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructureServices(builder.Configuration)
 .AddApplicationServices().AddApiServices();
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddGrpc();
-builder.Services.AddHealthChecks()
-    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
+//builder.Services.AddGrpc();
+//builder.Services.AddHealthChecks()
+//    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
-    await dbContext.Database.MigrateAsync();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
+//    await dbContext.Database.MigrateAsync();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -33,9 +32,9 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGrpcService<InventoryServiceImpl>();
-app.MapGet("/", () => "This service is for gRPC only.");
-app.MapHealthChecks("/health");
+//app.MapGrpcService<InventoryServiceImpl>();
+//app.MapGet("/", () => "This service is for gRPC only.");
+//app.MapHealthChecks("/health");
 app.Run();
 
 

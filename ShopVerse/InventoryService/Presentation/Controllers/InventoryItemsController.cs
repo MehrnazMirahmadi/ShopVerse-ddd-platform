@@ -1,4 +1,5 @@
 ﻿using Application.Inventory.Commands.UpdateInventoryItem;
+using Application.Inventory.Queries.CheckInvetoryAvailability;
 using Application.Inventory.Queries.GetInventoryItems;
 using ShopVerse.BuildingBlocks.Paging;
 
@@ -51,4 +52,16 @@ public class InventoryItemsController : ControllerBase
 
         return Ok(result.Value);
     }
+    [HttpGet("check-availability/{productId}/{quantity}")]
+    public async Task<IActionResult> CheckAvailability(Guid productId, int quantity)
+    {
+        var query = new CheckInventoryAvailabilityQuery(productId, quantity);
+        var result = await _sender.Send(query);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+
+        return Ok(new { isAvailable = result.Value });
+    }
+
 }

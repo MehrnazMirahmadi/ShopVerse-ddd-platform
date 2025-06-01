@@ -3,5 +3,5 @@
 public record CreateOrderCommand(OrderDto Order)
     : ICommand<CreateOrderResult>;
 
-public record CreateOrderResult(Guid Id);
+public record CreateOrderResult(bool IsSuccess, Guid? Id = null, string ErrorMessage = null);
 

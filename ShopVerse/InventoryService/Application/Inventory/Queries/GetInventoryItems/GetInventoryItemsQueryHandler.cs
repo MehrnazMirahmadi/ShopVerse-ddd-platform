@@ -20,7 +20,7 @@ public class GetInventoryItemsQueryHandler(IUnitOfWork unitOfWork)
                 return Result<PaginationResult<InventoryItemDto>>.Fail("انبار خالی است");
             }
 
-            var dtoList = pagedItems.Data.Select(i => new InventoryItemDto(i.Id.Value, i.Name, i.Quantity)).ToList();
+            var dtoList = pagedItems.Data.Select(i => new InventoryItemDto(i.Id.Value, i.Name, i.Quantity,i.ProductId)).ToList();
 
             var paginatedResult = new PaginationResult<InventoryItemDto>(
                 pagedItems.PageSize,

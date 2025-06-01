@@ -10,4 +10,6 @@ public interface IInventoryItemRepository
     Task Update(InventoryItem item, CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
     Task <bool> GetAvailableQuantityAsync(ProductId productId,int quntity);
+    Task<InventoryItem?> GetByProductIdAsync(ProductId productId, CancellationToken cancellationToken = default);
+
 }
