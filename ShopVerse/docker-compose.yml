@@ -1,17 +1,10 @@
 services:
   inventorydb:
     image: mcr.microsoft.com/mssql/server
-  orderdb:
-    image: mcr.microsoft.com/mssql/server
   inventoryservice:
     image: ${DOCKER_REGISTRY-}inventoryapi
     build:
       context: .
       dockerfile: InventoryService/Presentation/Dockerfile
 
-  salesservice:
-    image: ${DOCKER_REGISTRY-}salesapi
-    build:
-      context: .
-      dockerfile: SalesService/Presentation/Dockerfile
 

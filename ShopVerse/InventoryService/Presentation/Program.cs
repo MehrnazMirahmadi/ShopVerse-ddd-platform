@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.Context;
+﻿using Infrastructure.Extentions;
+using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Presentation;
 //using Inventory.Presentation.GrpcServices;
@@ -37,6 +38,10 @@ app.MapControllers();
 //app.MapGrpcService<InventoryServiceImpl>();
 //app.MapGet("/", () => "This service is for gRPC only.");
 //app.MapHealthChecks("/health");
+if (app.Environment.IsDevelopment())
+{
+    await app.InitialiseDatabaseAsync();
+}
 app.Run();
 
 

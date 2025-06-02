@@ -9,6 +9,7 @@ public class InventoryDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(InventoryDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<InventoryItem> InventoryItems { get; set; } = null!;
