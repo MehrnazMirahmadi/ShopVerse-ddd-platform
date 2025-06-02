@@ -1,10 +1,45 @@
+version: '3.8'
+ 
 services:
-  inventorydb:
-    image: mcr.microsoft.com/mssql/server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SwN12345678
+    ports:
+      - "1433"
+    networks:
+      - appnet
   inventoryservice:
     image: ${DOCKER_REGISTRY-}inventoryapi
     build:
       context: .
       dockerfile: InventoryService/Presentation/Dockerfile
-
-
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=InventoryDb;User Id=sa;Password=SwN12345678;
+    depends_on:
+      - sqlserver
+    ports:
+      - "5001:8080"
+      - "5051:8081"
+    networks:
+      - appnet
+ 
+  salesservice:
+    image: ${DOCKER_REGISTRY-}salesapi
+    build:
+      context: .
+      dockerfile: SalesService/Presentation/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=OrderDb;User Id=sa;Password=SwN12345678;
+    depends_on:
+      - sqlserver
+    ports:
+      - "5000:8082"
+      - "5050:8083"
+    networks:
+      - appnet
+ 
+networks:
+  appnet:
+    driver: bridge
