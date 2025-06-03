@@ -6,10 +6,10 @@ public class InventoryItemSpecification : BaseSpecification<InventoryItem>
 {
     public InventoryItemSpecification(PaginationRequest paging)
     {
-           if (!string.IsNullOrWhiteSpace(paging.FilterName))
-            AddCriteria(x => x.Name.Contains(paging.FilterName)); 
+        if (!string.IsNullOrWhiteSpace(paging.FilterName))
+            AddCriteria(x => x.Name.Contains(paging.FilterName));
 
-          if (paging.SortByQuantityDesc)
+        if (paging.SortByQuantityDesc)
             ApplyOrderByDescending(x => x.Quantity);
         else
             ApplyOrderBy(x => x.Name);

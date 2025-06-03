@@ -1,16 +1,12 @@
-﻿using Domain.Contract.Repositories;
-using Infrastructure.Persistence.Context;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence;
 
-public class UnitOfWork (OrderDbContext context, IOrderRepository orderRepository)
+public class UnitOfWork(OrderDbContext context, IOrderRepository orderRepository)
     : IUnitOfWork, IDisposable
 {
 
     private IDbContextTransaction? _transaction;
-
-   
 
     public IOrderRepository OrderRepository => orderRepository;
 

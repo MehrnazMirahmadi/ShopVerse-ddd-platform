@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Domain.Contract.Repositories;
+﻿namespace Domain.Contract.Repositories;
 
 public interface IOrderRepository
 {
@@ -8,4 +6,5 @@ public interface IOrderRepository
     Task AddOrderAsync(Order order, CancellationToken cancellationToken = default);
     Task UpdateOrderAsync(Order order, CancellationToken cancellationToken = default);
     Task<bool> ExistsAsync(Guid orderId, CancellationToken cancellationToken = default);
+    Task<PaginationResult<Order>> GetAllAsync(BaseSpecification<Order> specification, CancellationToken cancellationToken = default);
 }

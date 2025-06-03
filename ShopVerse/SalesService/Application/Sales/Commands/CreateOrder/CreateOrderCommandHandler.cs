@@ -3,10 +3,9 @@ using Application.Contracts;
 using Domain.Contract;
 using Domain.Entities;
 using Domain.ValueObjects;
-using ShopVerse.BuildingBlocks.Result;
 
 namespace Application.Sales.Commands.CreateOrder;
-public class CreateOrderCommandValidator 
+public class CreateOrderCommandValidator
     : AbstractValidator<CreateOrderCommand>
 {
     public CreateOrderCommandValidator()
