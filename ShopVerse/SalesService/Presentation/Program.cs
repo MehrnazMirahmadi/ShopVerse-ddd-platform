@@ -33,11 +33,11 @@ builder.Services.AddSwaggerGen();
 //    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
-//     dbContext.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    dbContext.Database.Migrate();
+}
 
 
 // Configure the HTTP request pipeline.

@@ -1,5 +1,4 @@
-version: '3.8'
- 
+
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -7,39 +6,52 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=SwN12345678
     ports:
-      - "1433"
+      - "1433:1433"
     networks:
       - appnet
+
   inventoryservice:
     image: ${DOCKER_REGISTRY-}inventoryapi
     build:
       context: .
       dockerfile: InventoryService/Presentation/Dockerfile
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=InventoryDb;User Id=sa;Password=SwN12345678;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=sqlserver;Database=InventoryDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
     depends_on:
       - sqlserver
     ports:
       - "5001:8080"
       - "5051:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - appnet
- 
+
   salesservice:
     image: ${DOCKER_REGISTRY-}salesapi
     build:
       context: .
       dockerfile: SalesService/Presentation/Dockerfile
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=OrderDb;User Id=sa;Password=SwN12345678;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8082
+      - ASPNETCORE_HTTPS_PORTS=8083
+      - ConnectionStrings__Database=Server=sqlserver;Database=OrderDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
     depends_on:
       - sqlserver
     ports:
-      - "5000:8082"
-      - "5050:8083"
+      - "5056:8082"
+      - "5055:8083"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - appnet
- 
+
 networks:
   appnet:
     driver: bridge
