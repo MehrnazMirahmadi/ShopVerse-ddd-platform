@@ -1,4 +1,5 @@
-﻿using Domain.Contract;
+﻿using Application.Contracts;
+using Domain.Contract;
 using Domain.Entities;
 using Domain.ValueObjects;
 using Mapster;
@@ -7,16 +8,28 @@ using ShopVerse.BuildingBlocks.Messaging.Events;
 
 namespace Application.Sales.CheckoutOrder;
 
-public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork)
+public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork, IInventoryApiClient inventoryApiClient)
     : ICommandHandler<CheckoutOrderCommandRequest, CheckoutOrderCommandResponse>
 {
     public async Task<CheckoutOrderCommandResponse> Handle(CheckoutOrderCommandRequest request, CancellationToken cancellationToken)
     {
         var dto = request.orderCheckoutDto;
-        var exists = await unitOfWork.OrderRepository.ExistsAsync(dto.OrderId, cancellationToken);
-        if (!exists)
+        foreach (var item in request.orderCheckoutDto.Items)
         {
-            var shippingAddress = Address.Of(
+            bool isAvailable = await inventoryApiClient.CheckProductAvailabilityAsync(item.ProductId, item.Quantity);
+
+            if (!isAvailable)
+            {
+                return new CheckoutOrderCommandResponse(false, null, $"محصول با شناسه {item.ProductId} به اندازه کافی موجود نیست.");
+            }
+        }
+      
+        if (await unitOfWork.OrderRepository.ExistsAsync(dto.OrderId, cancellationToken))
+        {
+            return new CheckoutOrderCommandResponse(false, null, $"سفارش با شناسه {dto.OrderId} قبلاً ثبت شده است.");
+        }
+
+        var shippingAddress = Address.Of(
             dto.ShippingAddress.FirstName,
             dto.ShippingAddress.LastName,
             dto.ShippingAddress.EmailAddress,
@@ -58,10 +71,15 @@ public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnit
              item.Quantity,
              Money.Of(item.Price, "IRR")
          )).ToList();
-        }
+            order.SetOrderItems(orderItems);
+            await unitOfWork.OrderRepository.AddOrderAsync(order, cancellationToken);
+            await unitOfWork.SaveChangesAsync();
+       
+
+
         var eventMessage = request.orderCheckoutDto.Adapt<OrderCheckoutEvent>();
         await publishEndpoint.Publish(eventMessage, cancellationToken);
 
-        return new CheckoutOrderCommandResponse(true);
+        return new CheckoutOrderCommandResponse(true, null, dto.OrderId.ToString());
     }
 }
