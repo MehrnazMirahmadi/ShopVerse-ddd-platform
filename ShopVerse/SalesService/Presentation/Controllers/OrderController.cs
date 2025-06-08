@@ -26,22 +26,22 @@ public class OrdersController(ISender sender) : ControllerBase
 
         var result = await sender.Send(query);
 
-        if (!result.IsSuccess)
-        {
-            return BadRequest(result);
-        }
+        //if (!result.IsSuccess)
+        //{
+        //    return BadRequest(result);
+        //}
 
-        return Ok(result.Value);
+        return Ok(result);
     }
     [HttpPost("checkout")]
     public async Task<IActionResult> Checkout([FromBody] CheckoutOrderCommandRequest request)
     {
         var result = await sender.Send(request);
 
-        if (!result.IsSuccess)
-        {
-            return BadRequest("Checkout failed.");
-        }
+        //if (!result.IsSuccess)
+        //{
+        //    return BadRequest("Checkout failed.");
+        //}
 
         return Ok(result);
     }
