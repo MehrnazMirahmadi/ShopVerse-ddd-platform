@@ -19,5 +19,12 @@ public class InventoryItem : Aggregate<InventoryItemId>
     {
         Quantity += quantity;
     }
+    public void DecreaseQuantity(int quantity)
+    {
+        if (Quantity < quantity)
+            throw new InvalidOperationException("Insufficient inventory.");
+
+        Quantity -= quantity;
+    }
 
 }

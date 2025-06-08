@@ -23,7 +23,8 @@ public record GetOrdersQueryHandler
         }
         var dtoList = pagedItems.Data.Select(o => new OrderListDto
         {
-            OrderId = o.Id.Value,
+            OrderId = o.Id,
+            //OrderId = o.Id.Value,
             CustomerId = o.CustomerId.Value,
             Status = (int)o.Status,
             OrderItems = o.OrderItems.Select(oi => new OrderItemListDto

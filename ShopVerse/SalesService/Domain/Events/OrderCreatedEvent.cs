@@ -2,7 +2,7 @@
 
 namespace Domain.Events;
 
-public sealed record OrderCreatedEvent(OrderId orderId, CustomerId customerId, List<OrderItem> OrderItems)
+public sealed record OrderCreatedEvent(Order Order)
     : DomainEventBase
 {
 }

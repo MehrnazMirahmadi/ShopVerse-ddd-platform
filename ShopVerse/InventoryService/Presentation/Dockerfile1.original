@@ -13,9 +13,8 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["InventoryService/Presentation/Inventory.Presentation.csproj", "InventoryService/Presentation/"]
-COPY ["ShopVerse.BuildingBlocks.Messaging/ShopVerse.BuildingBlocks.Messaging/ShopVerse.BuildingBlocks.Messaging.csproj", "ShopVerse.BuildingBlocks.Messaging/ShopVerse.BuildingBlocks.Messaging/"]
-COPY ["ShopVerse.BuildingBlocks/ShopVerse.BuildingBlocks.csproj", "ShopVerse.BuildingBlocks/"]
 COPY ["InventoryService/Application/Application.csproj", "InventoryService/Application/"]
+COPY ["ShopVerse.BuildingBlocks/ShopVerse.BuildingBlocks.csproj", "ShopVerse.BuildingBlocks/"]
 COPY ["InventoryService/Domain/Domain.csproj", "InventoryService/Domain/"]
 COPY ["InventoryService/Infrastructure/Infrastructure.csproj", "InventoryService/Infrastructure/"]
 RUN dotnet restore "./InventoryService/Presentation/Inventory.Presentation.csproj"

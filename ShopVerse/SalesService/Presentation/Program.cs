@@ -5,7 +5,7 @@
 using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-
+using ShopVerse.BuildingBlocks.Messaging.MassTransit;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+// Async Communication Services
+builder.Services.AddMessageBroker(builder.Configuration);
+
 
 // Register gRPC service client (if this is a gRPC client consumer)
 //builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>

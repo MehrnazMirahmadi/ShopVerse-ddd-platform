@@ -119,4 +119,24 @@ public class InventoryItemRepository
         return await _db.InventoryItems
             .FirstOrDefaultAsync(x => x.ProductId == productId, cancellationToken);
     }
+
+    public async Task<bool> DecreaseQuantityAsync(ProductId productId, int quantity, CancellationToken cancellationToken = default)
+    {
+        var item = await _db.InventoryItems.FirstOrDefaultAsync(x => x.ProductId == productId, cancellationToken);
+
+        if (item == null) return false;
+
+        try
+        {
+            item.DecreaseQuantity(quantity);
+            _db.InventoryItems.Update(item);
+            await _db.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
 }

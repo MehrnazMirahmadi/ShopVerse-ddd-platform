@@ -28,6 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ShopVerse.BuildingBlocks.Messaging\ShopVerse.BuildingBlocks.Messaging\ShopVerse.BuildingBlocks.Messaging.csproj" />
+    <ProjectReference Include="..\..\ShopVerse.BuildingBlocks\ShopVerse.BuildingBlocks.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>

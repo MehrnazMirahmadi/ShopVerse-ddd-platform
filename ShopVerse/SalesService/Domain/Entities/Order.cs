@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Events;
 namespace Domain.Entities;
 
 public class Order : Aggregate<OrderId>
@@ -32,7 +33,9 @@ public class Order : Aggregate<OrderId>
     Address shippingAddress, Address billingAddress,
     Payment payment, OrderStatus status = OrderStatus.Pending)
     {
-        return new Order(id, customerId, orderName, shippingAddress, billingAddress, payment, status);
+        var order = new Order(id, customerId, orderName, shippingAddress, billingAddress, payment, status);
+        order.AddDomainEvent(new OrderCreatedEvent(order));
+        return order;
     }
     internal void AddOrderItem(OrderItemId id, ProductId productId, int quantity, Money price)
     {

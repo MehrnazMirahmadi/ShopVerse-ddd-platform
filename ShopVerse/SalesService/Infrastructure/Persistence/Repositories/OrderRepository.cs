@@ -13,14 +13,14 @@ public class OrderRepository(OrderDbContext context) : IOrderRepository
 
     public async Task<bool> ExistsAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
-        return await context.Orders.AnyAsync(o => o.Id.Value == orderId, cancellationToken);
+        return await context.Orders.AnyAsync(o => o.Id == orderId, cancellationToken);
     }
 
     public async Task<Order> GetOrderByIdAsync(Guid orderId, CancellationToken cancellationToken = default)
     {
         var order = await context.Orders
             .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.Id.Value == orderId, cancellationToken);
+            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
 
         if (order == null)
             throw new KeyNotFoundException("Order not found.");

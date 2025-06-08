@@ -1,7 +1,6 @@
-﻿using Application.Sales.Queries.GetOrders;
-using MediatR;
+﻿using Application.Sales.CheckoutOrder;
+using Application.Sales.Queries.GetOrders;
 using ShopVerse.BuildingBlocks.Paging;
-using System.Net.NetworkInformation;
 
 namespace Presentation.Controllers;
 
@@ -34,5 +33,18 @@ public class OrdersController(ISender sender) : ControllerBase
 
         return Ok(result.Value);
     }
+    [HttpPost("checkout")]
+    public async Task<IActionResult> Checkout([FromBody] CheckoutOrderCommandRequest request)
+    {
+        var result = await sender.Send(request);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest("Checkout failed.");
+        }
+
+        return Ok(result);
+    }
+
 }
 
