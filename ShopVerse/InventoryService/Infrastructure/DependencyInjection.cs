@@ -11,8 +11,7 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("Database");
 
-        //services.AddDbContext<InventoryDbContext>(options =>
-        //   options.UseSqlServer(connectionString));
+        
         services.AddDbContext<InventoryDbContext>(options =>
           options.UseSqlServer(connectionString, opt =>
         opt.EnableRetryOnFailure())

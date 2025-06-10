@@ -3,7 +3,7 @@ using Domain.ValueObjects;
 using Grpc.Core;
 using InventoryGrpc;
 
-namespace Inventory.Presentation.GrpcServices;
+namespace Inventory.Grpc.Services;
 
 public class InventoryServiceImpl(IInventoryItemRepository inventoryRepository) : InventoryService.InventoryServiceBase
 {
@@ -19,6 +19,8 @@ public class InventoryServiceImpl(IInventoryItemRepository inventoryRepository) 
         bool isAvailable = await inventoryRepository.GetAvailableQuantityAsync(productId, request.Quantity);
 
         return new CheckStockResponse { IsAvailable = isAvailable };
+
     }
 
 }
+

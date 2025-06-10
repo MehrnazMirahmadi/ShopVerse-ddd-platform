@@ -34,10 +34,4 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="..\..\Shared\Shared.GrpcContracts\inventory.proto" GrpcServices="Server">
-      <Link>Protos\inventory.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
 </Project>

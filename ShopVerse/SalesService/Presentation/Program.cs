@@ -1,10 +1,10 @@
 ﻿using Application;
-//using InventoryGrpc;
-//using Application.GrpcInterface;
-//using Presentation.GrpcServices;
+using Application.GrpcInterface;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
+using InventoryGrpc;
 using Microsoft.EntityFrameworkCore;
+using Presentation.GrpcServices;
 using ShopVerse.BuildingBlocks.Messaging.MassTransit;
 
 
@@ -21,17 +21,17 @@ builder.Services.AddMessageBroker(builder.Configuration);
 
 
 // Register gRPC service client (if this is a gRPC client consumer)
-//builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
-//{
-//    o.Address = new Uri("https://localhost:5051");
+builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
+{
+    o.Address = new Uri("http://inventory.grpc:8084");
 
-//});
+});
 //builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(options =>
 //{
 //    options.Address = new Uri(builder.Configuration["GrpcSettings:InventoryUrl"]!);
 //});
 
-//builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
+builder.Services.AddScoped<IInventoryServiceClient, GrpcInventoryServiceClient>();
 //builder.Services.AddHealthChecks()
 //    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
 
