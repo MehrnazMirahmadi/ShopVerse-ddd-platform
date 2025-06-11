@@ -6,7 +6,8 @@
       "serviceActions": {
         "presentation": "StartDebugging",
         "inventory.presentation": "StartDebugging",
-        "inventory.grpc": "StartDebugging"
+        "inventory.grpc": "StartDebugging",
+        "finance.presentation": "StartDebugging"
       }
     }
   }

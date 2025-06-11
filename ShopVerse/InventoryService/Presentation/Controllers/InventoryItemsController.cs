@@ -5,20 +5,15 @@ using ShopVerse.BuildingBlocks.Paging;
 
 [ApiController]
 [Route("api/[controller]")]
-public class InventoryItemsController : ControllerBase
+public class InventoryItemsController(ISender sender) : ControllerBase
 {
-    private readonly ISender _sender;
-
-    public InventoryItemsController(ISender sender)
-    {
-        _sender = sender;
-    }
+    
     [HttpGet]
     public async Task<IActionResult> GetAll(
     [FromQuery] PaginationRequest paging,
     CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(
+        var result = await sender.Send(
             new GetInventoryItemsQuery(paging),
             cancellationToken);
 
@@ -31,7 +26,7 @@ public class InventoryItemsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateInventoryItemCommand command, CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -45,7 +40,7 @@ public class InventoryItemsController : ControllerBase
         if (id != command.inventoryItem.Id)
             return BadRequest("Mismatch between route ID and body ID");
 
-        var result = await _sender.Send(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);
@@ -56,7 +51,7 @@ public class InventoryItemsController : ControllerBase
     public async Task<IActionResult> CheckAvailability(Guid productId, int quantity)
     {
         var query = new CheckInventoryAvailabilityQuery(productId, quantity);
-        var result = await _sender.Send(query);
+        var result = await sender.Send(query);
 
         if (!result.IsSuccess)
             return BadRequest(result.Message);

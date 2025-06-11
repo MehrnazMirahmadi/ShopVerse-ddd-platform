@@ -4,13 +4,13 @@ VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FinanceService", "FinanceService", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "FinanceService\Domain\Domain.csproj", "{6FD83B8F-3088-4429-87A0-CE9189CD8D2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Domain", "FinanceService\Domain\Finance.Domain.csproj", "{6FD83B8F-3088-4429-87A0-CE9189CD8D2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "FinanceService\Application\Application.csproj", "{42F19D29-0DD6-4C57-8C81-84B368BD9C4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Application", "FinanceService\Application\Finance.Application.csproj", "{42F19D29-0DD6-4C57-8C81-84B368BD9C4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "FinanceService\Infrastructure\Infrastructure.csproj", "{F524B9D3-9008-4674-B494-62940CC50808}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Infrastructure", "FinanceService\Infrastructure\Finance.Infrastructure.csproj", "{F524B9D3-9008-4674-B494-62940CC50808}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "FinanceService\Presentation\Presentation.csproj", "{F0AA51E7-593B-4B99-983F-97DB25130329}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Presentation", "FinanceService\Presentation\Finance.Presentation.csproj", "{F0AA51E7-593B-4B99-983F-97DB25130329}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InventoryService", "InventoryService", "{A7E8EDCD-2BF5-4206-8E49-F4AA3224911E}"
 EndProject

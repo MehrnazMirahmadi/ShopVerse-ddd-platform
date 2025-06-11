@@ -5,5 +5,4 @@ public record GetInventoryItemsQuery(
     bool SortByQuantityDesc = false
 ) : IQuery<Result<PaginationResult<InventoryItemDto>>>;
 
-
 public record InventoryItemsResult(IReadOnlyList<InventoryItemDto> InventoryItems);

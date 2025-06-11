@@ -1,0 +1,10 @@
+﻿global using Finance.Domain.Contract;
+global using Finance.Domain.Contract.Repositories;
+global using Finance.Infrastructure.Persistence;
+global using Finance.Infrastructure.Persistence.Context;
+global using Finance.Infrastructure.Persistence.Repositories;
+global using Microsoft.EntityFrameworkCore;
+global using Finance.Domain.Entities.Invoices;
+global using Finance.Domain.Entities.Payments;
+global using ShopVerse.BuildingBlocks.Paging;
+global using ShopVerse.BuildingBlocks.Specifications;

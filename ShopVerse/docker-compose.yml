@@ -1,4 +1,3 @@
-
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -7,6 +6,19 @@ services:
       - SA_PASSWORD=SwN12345678
     ports:
       - "1433:1433"
+    networks:
+      - appnet
+  finance-db:
+    image: postgres:16
+    container_name: finance-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=FinanceDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
       - appnet
   messagebroker :
@@ -97,7 +109,30 @@ services:
     networks:
       - appnet
 
+  finance.presentation:
+    image: ${DOCKER_REGISTRY-}financepresentation
+    build:
+      context: .
+      dockerfile: FinanceService/Presentation/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8086
+      - ASPNETCORE_HTTPS_PORTS=8087
+      - ConnectionStrings__Database=Host=finance-db;Port=5432;Database=FinanceDb;Username=postgres;Password=postgres
+    depends_on:
+      - finance-db
+    ports:
+      - "5196:8086"
+      - "5197:8087"
+    networks:
+      - appnet
+
+
 networks:
   appnet:
     driver: bridge
+
+volumes:
+  pgdata:
+
 
