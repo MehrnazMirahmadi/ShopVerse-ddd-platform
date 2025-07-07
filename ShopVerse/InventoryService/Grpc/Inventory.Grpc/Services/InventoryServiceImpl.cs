@@ -2,6 +2,7 @@
 using Domain.ValueObjects;
 using Grpc.Core;
 using InventoryGrpc;
+//
 
 namespace Inventory.Grpc.Services;
 
