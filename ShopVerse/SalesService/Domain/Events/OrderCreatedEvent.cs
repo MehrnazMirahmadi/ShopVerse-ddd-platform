@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Domain.Events;
+﻿namespace Domain.Events;
 
 public sealed record OrderCreatedEvent(Order Order)
     : DomainEventBase

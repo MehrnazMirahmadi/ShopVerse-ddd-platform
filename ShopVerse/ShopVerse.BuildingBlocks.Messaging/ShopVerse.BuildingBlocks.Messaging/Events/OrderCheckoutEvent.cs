@@ -1,6 +1,4 @@
-﻿using ShopVerse.BuildingBlocks.Messaging.Events;
-
-namespace ShopVerse.BuildingBlocks.Messaging.Events;
+﻿namespace ShopVerse.BuildingBlocks.Messaging.Events;
 
 public record OrderCheckoutEvent : IntegrationEvent
 {

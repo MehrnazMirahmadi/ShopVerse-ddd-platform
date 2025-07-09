@@ -1,7 +1,7 @@
 ﻿namespace Finance.Application.Finance.Commands.CreateInvoice;
 
 public record CreateInvoiceCommand(
-    long RelatedEntityId,
+     Guid RelatedEntityId,
     string RelatedEntityType,
     string InvoiceNumber,
     DateTime IssuedAt,

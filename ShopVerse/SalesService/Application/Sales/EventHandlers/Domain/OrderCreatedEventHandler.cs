@@ -21,7 +21,7 @@ public class OrderCreatedEventHandler : INotificationHandler<OrderCreatedEvent>
     {
         _logger.LogInformation("Domain Event handled: {DomainEvent}", domainEvent.GetType().Name);
 
-        var orderCreatedIntegrationEvent = domainEvent.Order.Adapt<OrderDto>();
+        var orderCreatedIntegrationEvent = domainEvent.Order.Adapt<OrderCreatedEvent>();
 
         await _publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
     }

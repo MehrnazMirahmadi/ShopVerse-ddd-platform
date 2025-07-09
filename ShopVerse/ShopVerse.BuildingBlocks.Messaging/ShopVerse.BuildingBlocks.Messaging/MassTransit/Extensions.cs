@@ -8,11 +8,15 @@ namespace ShopVerse.BuildingBlocks.Messaging.MassTransit;
 public static class Extensions
 {
     public static IServiceCollection AddMessageBroker
-      (this IServiceCollection services, IConfiguration configuration, Assembly? assembly = null)
+      (this IServiceCollection services
+        , IConfiguration configuration
+        , string servicePrefix
+        , Assembly? assembly = null)
     {
         services.AddMassTransit(config =>
         {
-            config.SetKebabCaseEndpointNameFormatter();
+            // config.SetKebabCaseEndpointNameFormatter();
+            config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(servicePrefix, false));
 
             if (assembly != null)
                 config.AddConsumers(assembly);

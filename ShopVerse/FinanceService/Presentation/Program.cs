@@ -1,19 +1,24 @@
+using Finance.Application;
 using Finance.Infrastructure;
 using Finance.Infrastructure.Persistence.Context;
 using Finance.Infrastructure.Persistence.Seed;
+using Finance.Presentation;
 using Microsoft.EntityFrameworkCore;
-using Finance.Application;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//  FinanceDbContext 
+builder.Services
+    .AddFinanceInfrastructure(builder.Configuration)
+    .AddApplicationServices(builder.Configuration)  
+    .AddApiServices();
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//  FinanceDbContext 
-builder.Services.AddFinanceInfrastructure(builder.Configuration)
-    .AddApplicationServices();
+
 
 var app = builder.Build();
 

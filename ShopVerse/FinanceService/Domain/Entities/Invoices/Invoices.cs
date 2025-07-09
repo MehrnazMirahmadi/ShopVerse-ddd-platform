@@ -15,7 +15,7 @@ public class Invoice : Aggregate<long>
     public decimal TotalAmount => _items.Sum(i => i.TotalPrice);
     public InvoiceStatus Status { get; private set; }
 
-    public long RelatedEntityId { get; private set; }
+    public Guid RelatedEntityId { get; private set; }
     public string RelatedEntityType { get; private set; }
 
     public IReadOnlyCollection<InvoiceItem> Items => _items.AsReadOnly();
@@ -24,8 +24,8 @@ public class Invoice : Aggregate<long>
     // برای EF Core
     private Invoice() { }
 
-    // ✅ فقط داخل متد Create از این استفاده می‌کنیم
-    private Invoice(string invoiceNumber, DateTime issuedAt, string relatedEntityType, long relatedEntityId)
+
+    private Invoice(string invoiceNumber, DateTime issuedAt, string relatedEntityType, Guid relatedEntityId)
     {
         InvoiceNumber = invoiceNumber;
         IssuedAt = issuedAt;
@@ -35,8 +35,7 @@ public class Invoice : Aggregate<long>
         CreatedAt = DateTime.UtcNow;
     }
 
-    // ✅ Factory Method پیشنهادی
-    public static Invoice Create(string invoiceNumber, DateTime issuedAt, string relatedEntityType, long relatedEntityId)
+    public static Invoice Create(string invoiceNumber, DateTime issuedAt, string relatedEntityType, Guid relatedEntityId)
     {
         if (string.IsNullOrWhiteSpace(invoiceNumber))
             throw new ArgumentException("Invoice number is required.", nameof(invoiceNumber));
@@ -44,8 +43,8 @@ public class Invoice : Aggregate<long>
         if (string.IsNullOrWhiteSpace(relatedEntityType))
             throw new ArgumentException("Related entity type is required.", nameof(relatedEntityType));
 
-        if (relatedEntityId <= 0)
-            throw new ArgumentException("Related entity ID must be greater than zero.", nameof(relatedEntityId));
+        if (relatedEntityId == Guid.Empty)
+            throw new ArgumentException("Related entity ID is required.", nameof(relatedEntityId));
 
         return new Invoice(invoiceNumber, issuedAt, relatedEntityType, relatedEntityId);
     }

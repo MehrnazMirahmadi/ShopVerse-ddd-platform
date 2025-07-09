@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.Factories;
 using Application.GrpcInterface;
 using Domain.Contract;
 using Domain.Entities;
@@ -9,21 +10,13 @@ using ShopVerse.BuildingBlocks.Messaging.Events;
 
 namespace Application.Sales.CheckoutOrder;
 
-public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)//, IInventoryApiClient inventoryApiClient
+public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)
     : ICommandHandler<CheckoutOrderCommandRequest, CheckoutOrderCommandResponse>
 {
     public async Task<CheckoutOrderCommandResponse> Handle(CheckoutOrderCommandRequest request, CancellationToken cancellationToken)
     {
         var dto = request.orderCheckoutDto;
-        //foreach (var item in request.orderCheckoutDto.Items)
-        //{
-        //    bool isAvailable = await inventoryApiClient.CheckProductAvailabilityAsync(item.ProductId, item.Quantity);
-
-        //    if (!isAvailable)
-        //    {
-        //        return new CheckoutOrderCommandResponse(false, null, $"محصول با شناسه {item.ProductId} به اندازه کافی موجود نیست.");
-        //    }
-        //}
+        
         foreach (var item in request.orderCheckoutDto.Items)
         {
             var isAvailable = await inventoryClient.IsProductAvailableAsync(item.ProductId, item.Quantity);
@@ -64,30 +57,39 @@ public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnit
             dto.Payment.PaymentMethod
         );
 
+
         var order = Order.Create(
-        OrderId.Of(Guid.NewGuid()),
-        CustomerId.Of(dto.CustomerId),
-        OrderName.Of(dto.OrderName),
-        shippingAddress,
-        billingAddress,
-        payment);
+         OrderId.Of(Guid.NewGuid()),
+         CustomerId.Of(dto.CustomerId),
+         OrderName.Of(dto.OrderName),
+         shippingAddress,
+         billingAddress,
+         payment
+     );
+
+        // ساخت آیتم‌ها
         var orderItems = dto.Items.Select(item =>
-     OrderItem.Create(
-         OrderItemId.Of(Guid.NewGuid()),
-         order.Id,
-         ProductId.Of(item.ProductId),
-         item.Quantity,
-         Money.Of(item.Price, "IRR")
-     )).ToList();
+            OrderItem.Create(
+                OrderItemId.Of(Guid.NewGuid()),
+                order.Id,
+                ProductId.Of(item.ProductId),
+                item.Quantity,
+                Money.Of(item.Price, "IRR")
+            )).ToList();
+
         order.SetOrderItems(orderItems);
+
+      
         await unitOfWork.OrderRepository.AddOrderAsync(order, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-
-
-        var eventMessage = request.orderCheckoutDto.Adapt<OrderCheckoutEvent>();
+       
+        var eventMessage = OrderCheckoutEventFactory.Create(order);
         await publishEndpoint.Publish(eventMessage, cancellationToken);
+        
 
-        return new CheckoutOrderCommandResponse(true, null, dto.OrderId.ToString());
+        return new CheckoutOrderCommandResponse(true, null, order.Id.Value.ToString());
+
+
     }
 }

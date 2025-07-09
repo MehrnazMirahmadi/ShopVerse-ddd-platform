@@ -1,7 +1,5 @@
 ﻿using Finance.Application.Dtos;
 using Finance.Application.Finance.Specifications;
-using Finance.Domain.Contract;
-using ShopVerse.BuildingBlocks.CQRS;
 using ShopVerse.BuildingBlocks.Paging;
 
 namespace Finance.Application.Finance.Queries.GetAllInvoices;
@@ -10,8 +8,8 @@ public class GetInvoicesQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<Get
 {
     public async Task<Result<PaginationResult<InvoiceItemDto>>> Handle(GetInvoicesQuery request, CancellationToken cancellationToken)
     {
-		try
-		{
+        try
+        {
             var spec = new InvoiceSpecification(request.Paging);
             var pagedItems = await unitOfWork.InvoiceRepository.GetAllAsync(spec, cancellationToken);
             if (pagedItems.Data == null || !pagedItems.Data.Any())
