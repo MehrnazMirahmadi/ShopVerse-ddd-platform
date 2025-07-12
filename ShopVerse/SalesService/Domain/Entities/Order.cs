@@ -53,5 +53,8 @@ public class Order : Aggregate<OrderId>
     {
         Status = newStatus;
     }
+    public Money TotalPrice =>
+    _orderItems.Aggregate(Money.Of(0, "IRR"), (sum, item) => sum + item.Price * item.Quantity);
+
 }
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finance.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20250611061914_init")]
-    partial class init
+    [Migration("20250709074128_Change_RelatedEntityId_To_Guid")]
+    partial class Change_RelatedEntityId_To_Guid
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,8 +53,8 @@ namespace Finance.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<long>("RelatedEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("RelatedEntityId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("RelatedEntityType")
                         .IsRequired()

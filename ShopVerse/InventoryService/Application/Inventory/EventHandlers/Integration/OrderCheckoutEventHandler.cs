@@ -12,7 +12,7 @@ public class OrderCheckoutEventHandler
 {
     public async Task Consume(ConsumeContext<OrderCheckoutEvent> context)
     {
-        //TODO minus items from inventory
+        
         logger.LogInformation("Integration Event handled:{IntegrationEvent}", context.Message.GetType().Name);
         foreach (var item in context.Message.Items)
         {

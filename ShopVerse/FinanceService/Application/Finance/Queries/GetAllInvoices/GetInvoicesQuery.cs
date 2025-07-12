@@ -1,5 +1,4 @@
 ﻿using Finance.Application.Dtos;
-using ShopVerse.BuildingBlocks.CQRS;
 using ShopVerse.BuildingBlocks.Paging;
 
 namespace Finance.Application.Finance.Queries.GetAllInvoices;

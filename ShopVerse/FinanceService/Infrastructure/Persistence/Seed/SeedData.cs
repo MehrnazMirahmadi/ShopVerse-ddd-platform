@@ -10,7 +10,7 @@ public static class SeedData
                 invoiceNumber: "INV-001",
                 issuedAt: DateTime.UtcNow,
                 relatedEntityType: "Order",
-                relatedEntityId: 1
+                relatedEntityId: Guid.NewGuid() 
             );
 
             invoice.AddItem(

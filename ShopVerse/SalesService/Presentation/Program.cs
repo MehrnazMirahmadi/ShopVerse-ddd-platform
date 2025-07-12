@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 // Async Communication Services
-builder.Services.AddMessageBroker(builder.Configuration);
+builder.Services.AddMessageBroker(builder.Configuration,"sales");
 
 
 // Register gRPC service client (if this is a gRPC client consumer)

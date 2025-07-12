@@ -50,8 +50,8 @@ namespace Finance.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<long>("RelatedEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("RelatedEntityId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("RelatedEntityType")
                         .IsRequired()
