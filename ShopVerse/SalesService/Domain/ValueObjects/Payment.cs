@@ -26,7 +26,9 @@ public record Payment
         ArgumentException.ThrowIfNullOrWhiteSpace(cardName);
         ArgumentException.ThrowIfNullOrWhiteSpace(cardNumber);
         ArgumentException.ThrowIfNullOrWhiteSpace(cvv);
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(cvv.Length, 3);
+        //ArgumentOutOfRangeException.ThrowIfGreaterThan(cvv.Length, 3);
+        if (cvv == null || cvv.Length != 3)
+            throw new ArgumentOutOfRangeException(nameof(cvv), "CVV باید دقیقاً 3 کاراکتر باشد.");
 
         return new Payment(cardName, cardNumber, expiration, cvv, paymentMethod);
     }

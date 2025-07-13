@@ -87,5 +87,30 @@ public class CheckoutOrderCommandHandlerTests
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(), Times.Once);
 
     }
+    [Fact]
+    public async Task Handle_WithMultipleItems_ShouldCheckAllItemsAvailability()
+    {
+        // Arrange
+        var handler = CreateHandler();
+        var request = FakeOrderCheckoutCommandRequest.WithMultipleItems();
+
+        _inventoryClientMock
+            .Setup(x => x.IsProductAvailableAsync(It.IsAny<Guid>(), It.IsAny<int>()))
+            .ReturnsAsync(true);
+
+        _unitOfWorkMock
+            .Setup(x => x.OrderRepository.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+
+        _inventoryClientMock.Verify(
+            x => x.IsProductAvailableAsync(It.IsAny<Guid>(), It.IsAny<int>()),
+            Times.Exactly(request.orderCheckoutDto.Items.Count));
+    }
 
 }

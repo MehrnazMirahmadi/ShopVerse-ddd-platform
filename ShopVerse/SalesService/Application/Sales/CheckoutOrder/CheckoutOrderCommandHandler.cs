@@ -16,7 +16,12 @@ public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnit
     public async Task<CheckoutOrderCommandResponse> Handle(CheckoutOrderCommandRequest request, CancellationToken cancellationToken)
     {
         var dto = request.orderCheckoutDto;
-        
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (request.orderCheckoutDto == null)
+            throw new ArgumentNullException(nameof(request.orderCheckoutDto));
+        if (request.orderCheckoutDto.Items == null)
+            throw new ArgumentNullException(nameof(request.orderCheckoutDto.Items));
         foreach (var item in request.orderCheckoutDto.Items)
         {
             var isAvailable = await inventoryClient.IsProductAvailableAsync(item.ProductId, item.Quantity);
