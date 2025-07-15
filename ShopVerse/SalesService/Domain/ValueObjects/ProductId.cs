@@ -1,6 +1,5 @@
 ﻿namespace Domain.ValueObjects;
 
-
 public sealed record ProductId
 {
     public Guid Value { get; }
@@ -10,10 +9,12 @@ public sealed record ProductId
         Value = value;
     }
 
+    public static ProductId NewId() => new ProductId(Guid.NewGuid());
+
     public static ProductId Of(Guid value)
     {
         if (value == Guid.Empty)
-            throw new DomainException("OrderItemId cannot be empty.");
+            throw new DomainException("ProductId cannot be empty.");
 
         return new ProductId(value);
     }
@@ -24,4 +25,3 @@ public sealed record ProductId
 
     public static explicit operator ProductId(Guid id) => Of(id);
 }
-

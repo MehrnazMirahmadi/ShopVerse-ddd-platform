@@ -2,13 +2,16 @@
 
 namespace Infrastructure.Persistence;
 
-public class UnitOfWork(OrderDbContext context, IOrderRepository orderRepository)
+public class UnitOfWork(OrderDbContext context
+    , IOrderRepository orderRepository
+    ,IProductRepository productRepository)
     : IUnitOfWork, IDisposable
 {
 
     private IDbContextTransaction? _transaction;
 
     public IOrderRepository OrderRepository => orderRepository;
+    public IProductRepository ProductRepository => productRepository;
 
     public bool HasActiveTransaction => _transaction != null;
 
