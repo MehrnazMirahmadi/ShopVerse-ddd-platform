@@ -7,7 +7,8 @@
         "presentation": "StartDebugging",
         "inventory.presentation": "StartDebugging",
         "inventory.grpc": "StartDebugging",
-        "finance.presentation": "StartDebugging"
+        "finance.presentation": "StartDebugging",
+        "catalog.presentation": "StartDebugging"
       }
     }
   }

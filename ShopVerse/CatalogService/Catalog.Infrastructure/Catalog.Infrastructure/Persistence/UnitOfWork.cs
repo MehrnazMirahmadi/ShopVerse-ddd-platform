@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Catalog.Domain.Contract;
+using Catalog.Domain.Contract.Repositories;
+using Catalog.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Infrastructure.Persistence;
+namespace Catalog.Infrastructure.Persistence;
 
-public class UnitOfWork(OrderDbContext context
-    , IOrderRepository orderRepository)
+public class UnitOfWork(CatalogDbContext context
+    , IProductRepository productRepository)
     : IUnitOfWork, IDisposable
 {
-
     private IDbContextTransaction? _transaction;
-
-    public IOrderRepository OrderRepository => orderRepository;
-
+    public IProductRepository ProductRepository => productRepository;
     public bool HasActiveTransaction => _transaction != null;
 
     public async Task BeginTransactionAsync()

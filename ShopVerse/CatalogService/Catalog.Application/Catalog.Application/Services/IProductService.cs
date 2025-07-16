@@ -1,13 +1,13 @@
-﻿using Domain.Entities;
-using Domain.ValueObjects;
+﻿using Catalog.Application.Dtos;
+using Catalog.Domain.Entities;
+using Catalog.Domain.ValueObjects;
 
-namespace Application.Services;
+namespace Catalog.Application.Services;
 
 public interface IProductService
 {
-    Task<ProductId> CreateProductAsync(string name, decimal price, CancellationToken cancellationToken);
+    Task<ProductId> CreateProductAsync(ProductDto ProductDto, CancellationToken cancellationToken);
     Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
     Task UpdateProductAsync(Product product, CancellationToken cancellationToken);
     Task DeleteProductAsync(ProductId id, CancellationToken cancellationToken);
 }
-

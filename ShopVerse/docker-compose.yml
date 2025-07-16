@@ -132,11 +132,36 @@ services:
       - appnet
 
 
+  catalog.presentation:
+    image: ${DOCKER_REGISTRY-}catalogpresentation
+    build:
+      context: .
+      dockerfile: CatalogService/Catalog.Presentation/Catalog.Presentation/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8088
+      - ASPNETCORE_HTTPS_PORTS=8089
+      - ConnectionStrings__Database=Server=sqlserver;Database=CatalogDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
+    depends_on:
+      - sqlserver
+    ports:
+      - "5234:8088"
+      - "7288:8089"
+    networks:
+      - appnet
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+   
+
 networks:
   appnet:
     driver: bridge
 
 volumes:
   pgdata:
+
 
 

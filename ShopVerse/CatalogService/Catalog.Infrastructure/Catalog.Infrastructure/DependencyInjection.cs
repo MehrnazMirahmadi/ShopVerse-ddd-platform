@@ -1,21 +1,22 @@
-﻿using Application.Contracts;
-using Application.Services;
-
-//using Application.GrpcInterface;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Repositories;
-using Infrastructure.Persistence.Services;
+﻿using Catalog.Application.Services;
+using Catalog.Domain.Contract;
+using Catalog.Domain.Contract.Repositories;
+using Catalog.Infrastructure.Persistence;
+using Catalog.Infrastructure.Persistence.Context;
+using Catalog.Infrastructure.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure;
+namespace Catalog.Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Database");
-        services.AddDbContext<OrderDbContext>(options =>
+
+        services.AddDbContext<CatalogDbContext>(options =>
             options.UseSqlServer(connectionString, sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
@@ -25,16 +26,9 @@ public static class DependencyInjection
                 );
             }));
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductService, ProductService>();
-        services.AddHttpClient<IInventoryApiClient, InventoryApiClient>(client =>
-        {
-            //client.BaseAddress = new Uri("https://localhost:5051"); 
-            //client.BaseAddress = new Uri("https://localhost:7000"); 
-            client.BaseAddress = new Uri("http://inventoryservice:8080");
-
-        });
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

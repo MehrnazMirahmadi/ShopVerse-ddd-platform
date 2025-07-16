@@ -17,7 +17,7 @@ public class Product : Aggregate<ProductId>
 
     private readonly List<ProductMedia> _media = new();
     public IReadOnlyCollection<ProductMedia> Media => _media.AsReadOnly();
-
+    private Product() { }
     private Product(ProductId id, string name, string smallDescription, string slug, decimal basePrice, int discount, int availableCount, CategoryId categoryId)
     {
         Id = id;
@@ -49,5 +49,4 @@ public class Product : Aggregate<ProductId>
         _media.Add(media);
     }
 
-    // متدهای تغییر قیمت، تغییر دسته و ... می‌تونی اضافه کنی
 }

@@ -1,10 +1,15 @@
-﻿namespace Infrastructure.Persistence.Repositories;
+﻿using Catalog.Domain.Contract.Repositories;
+using Catalog.Domain.Entities;
+using Catalog.Domain.ValueObjects;
+using Catalog.Infrastructure.Persistence.Context;
+
+namespace Catalog.Infrastructure.Persistence.Repositories;
 
 public class ProductRepository : IProductRepository
 {
-    private readonly OrderDbContext _context;
+    private readonly CatalogDbContext _context;
 
-    public ProductRepository(OrderDbContext context)
+    public ProductRepository(CatalogDbContext context)
     {
         _context = context;
     }
@@ -31,4 +36,3 @@ public class ProductRepository : IProductRepository
         return Task.CompletedTask;
     }
 }
-

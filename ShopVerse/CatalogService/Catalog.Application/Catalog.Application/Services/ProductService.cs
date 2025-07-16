@@ -1,29 +1,35 @@
-﻿using Domain.Contract;
-using Domain.Contract.Repositories;
-using Domain.Entities;
-using Domain.ValueObjects;
+﻿using AutoMapper;
+using Catalog.Application.Dtos;
+using Catalog.Application.Mappings;
+using Catalog.Domain.Contract;
+using Catalog.Domain.Contract.Repositories;
+using Catalog.Domain.Entities;
+using Catalog.Domain.ValueObjects;
 
-namespace Application.Services;
+namespace Catalog.Application.Services;
 
 public class ProductService : IProductService
 {
     private readonly IProductRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
-
-    public ProductService(IProductRepository repository, IUnitOfWork unitOfWork)
+    private readonly IMapper _mapper;
+    public ProductService(IProductRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
- 
-    public async Task<ProductId> CreateProductAsync(string name, decimal price, CancellationToken cancellationToken)
+
+    public async Task<ProductId> CreateProductAsync(ProductDto ProductDto, CancellationToken cancellationToken)
     {
-        var product = Product.Create(ProductId.NewId(), name, price);
+        //var product = _mapper.Map<Product>(ProductDto);
+        var product = ProductMapper.FromDto(ProductDto);
         await _repository.AddAsync(product, cancellationToken);
         await _unitOfWork.SaveChangesAsync();
         return product.Id;
     }
+    
 
     public async Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken)
     {
@@ -44,7 +50,8 @@ public class ProductService : IProductService
             await _repository.DeleteAsync(product, cancellationToken);
             await _unitOfWork.SaveChangesAsync();
         }
-           
+
     }
 
 }
+

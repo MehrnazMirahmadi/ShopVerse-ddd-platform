@@ -1,8 +1,7 @@
-﻿
-using Application.Services;
+﻿using Catalog.Application.Services;
+using ShopVerse.BuildingBlocks.CQRS;
 
-namespace Application.Sales.Commands.CreateProduct;
-
+namespace Catalog.Application.Products.Commands.CreateProduct;
 public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     private readonly IProductService _productService;
@@ -11,15 +10,19 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
     {
         _productService = productService;
     }
+
     public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var id = await _productService.CreateProductAsync(request.ProductDto.Name, request.ProductDto.Price, cancellationToken);
+            // Pass the whole DTO and cancellation token from request
+            var id = await _productService.CreateProductAsync(request.ProductDto, cancellationToken);
+
             return new CreateProductResult(true, id.Value);
         }
         catch (Exception ex)
         {
+            // Optionally log the exception here
             return new CreateProductResult(false, null, ex.Message);
         }
     }

@@ -1,6 +1,8 @@
-﻿using Application.Sales.Commands.CreateProduct;
+﻿using Catalog.Application.Products.Commands.CreateProduct;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Controllers;
+namespace Catalog.Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,4 +26,3 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 }
-
