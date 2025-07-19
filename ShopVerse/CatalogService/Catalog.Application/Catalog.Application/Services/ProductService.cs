@@ -36,11 +36,26 @@ public class ProductService : IProductService
         return await _repository.GetByIdAsync(id, cancellationToken);
     }
 
-    public async Task UpdateProductAsync(Product product, CancellationToken cancellationToken)
+    public async Task UpdateProductAsync(Product product, UpdateProductDto dto, CancellationToken cancellationToken)
     {
+
+        var categoryGuid = Guid.Parse(dto.CategoryId);
+        var categoryId = CategoryId.Of(categoryGuid);
+        product.UpdateDetails(
+            dto.Name,
+            dto.SmallDescription,
+            dto.Slug,
+            dto.BasePrice,
+            dto.Discount,
+            dto.AvailableCount,
+            categoryId);
+
+     
+
         await _repository.UpdateAsync(product, cancellationToken);
         await _unitOfWork.SaveChangesAsync();
     }
+
 
     public async Task DeleteProductAsync(ProductId id, CancellationToken cancellationToken)
     {

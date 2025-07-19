@@ -48,5 +48,19 @@ public class Product : Aggregate<ProductId>
     {
         _media.Add(media);
     }
+    public void UpdateDetails(string name, string smallDescription, string slug, decimal basePrice, int discount, int availableCount, CategoryId categoryId)
+    {
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required");
+        if (basePrice <= 0) throw new ArgumentOutOfRangeException(nameof(basePrice));
+        if (availableCount < 0) throw new ArgumentOutOfRangeException(nameof(availableCount));
+
+        Name = name;
+        SmallDescription = smallDescription;
+        Slug = slug;
+        BasePrice = basePrice;
+        Discount = discount;
+        AvailableCount = availableCount;
+        CategoryId = categoryId;
+    }
 
 }

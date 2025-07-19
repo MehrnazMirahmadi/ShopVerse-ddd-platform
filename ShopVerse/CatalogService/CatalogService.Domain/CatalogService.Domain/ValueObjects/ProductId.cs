@@ -20,7 +20,16 @@ public sealed record ProductId
 
         return new ProductId(value);
     }
-
+    public static bool TryParse(string str, out ProductId productId)
+    {
+        if (Guid.TryParse(str, out var guid) && guid != Guid.Empty)
+        {
+            productId = new ProductId(guid);
+            return true;
+        }
+        productId = null!;
+        return false;
+    }
     public override string ToString() => Value.ToString();
 
     public static implicit operator Guid(ProductId id) => id.Value;

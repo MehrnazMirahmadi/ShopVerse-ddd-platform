@@ -1,5 +1,4 @@
 ﻿using Application.Contracts;
-using Application.Services;
 
 //using Application.GrpcInterface;
 using Infrastructure.Persistence;
@@ -27,7 +26,6 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IProductService, ProductService>();
         services.AddHttpClient<IInventoryApiClient, InventoryApiClient>(client =>
         {
             //client.BaseAddress = new Uri("https://localhost:5051"); 
