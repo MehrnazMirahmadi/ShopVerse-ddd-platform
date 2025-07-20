@@ -9,7 +9,7 @@ public class UpdateProductDto
     public int Discount { get; set; }
     public int AvailableCount { get; set; }
     public string CategoryId { get; set; } = default!;
-
+    public int InventoryCount {  get; set; }
     public List<ProductFeatureDto> Features { get; set; } = new();
     public List<ProductMediaDto> Media { get; set; } = new();
 }

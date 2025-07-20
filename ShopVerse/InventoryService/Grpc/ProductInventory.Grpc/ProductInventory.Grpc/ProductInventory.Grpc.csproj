@@ -4,10 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>5a082fb6-a678-4156-a03b-94e4b58f2829</UserSecretsId>
+    <UserSecretsId>20560831-1d37-4078-9c13-844d41712978</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,20 +17,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Catalog.Application\Catalog.Application\Catalog.Application.csproj" />
-    <ProjectReference Include="..\..\Catalog.Infrastructure\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Presentation\Inventory.Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\..\Shared\Shared.GrpcContracts\productinventory.proto" GrpcServices="Client">
+    <Protobuf Include="..\..\..\..\Shared\Shared.GrpcContracts\productinventory.proto" GrpcServices="Server">
       <Link>Protos\productinventory.proto</Link>
     </Protobuf>
   </ItemGroup>

@@ -18,7 +18,6 @@ COPY ["ShopVerse.BuildingBlocks.Messaging/ShopVerse.BuildingBlocks.Messaging/Sho
 COPY ["CatalogService/CatalogService.Domain/CatalogService.Domain/Catalog.Domain.csproj", "CatalogService/CatalogService.Domain/CatalogService.Domain/"]
 COPY ["ShopVerse.BuildingBlocks/ShopVerse.BuildingBlocks.csproj", "ShopVerse.BuildingBlocks/"]
 COPY ["CatalogService/Catalog.Infrastructure/Catalog.Infrastructure/Catalog.Infrastructure.csproj", "CatalogService/Catalog.Infrastructure/Catalog.Infrastructure/"]
-COPY ["Shared/Shared.GrpcContracts/Shared.GrpcContracts.csproj", "Shared/Shared.GrpcContracts/"]
 RUN dotnet restore "./CatalogService/Catalog.Presentation/Catalog.Presentation/Catalog.Presentation.csproj"
 COPY . .
 WORKDIR "/src/CatalogService/Catalog.Presentation/Catalog.Presentation"

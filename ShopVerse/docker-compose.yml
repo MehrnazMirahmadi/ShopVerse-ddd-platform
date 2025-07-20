@@ -109,6 +109,27 @@ services:
     networks:
       - appnet
 
+  productinventory.grpc:
+    image: ${DOCKER_REGISTRY-}productinventorygrpc
+    build:
+      context: .
+      dockerfile: InventoryService/Grpc/ProductInventory.Grpc/ProductInventory.Grpc/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8090
+      - ASPNETCORE_HTTPS_PORTS=8091
+      - ConnectionStrings__Database=Server=sqlserver;Database=InventoryDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
+    ports:
+      - "5294:8090"
+      - "7242:8091"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - appnet
+
   finance.presentation:
     image: ${DOCKER_REGISTRY-}financepresentation
     build:
@@ -142,8 +163,10 @@ services:
       - ASPNETCORE_HTTP_PORTS=8088
       - ASPNETCORE_HTTPS_PORTS=8089
       - ConnectionStrings__Database=Server=sqlserver;Database=CatalogDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
+      - GrpcSettings__InventoryUrl=http://productinventory.grpc:8088
     depends_on:
       - sqlserver
+      - productinventory.grpc
     ports:
       - "5234:8088"
       - "7288:8089"
@@ -156,12 +179,14 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
    
 
+
 networks:
   appnet:
     driver: bridge
 
 volumes:
   pgdata:
+
 
 
 

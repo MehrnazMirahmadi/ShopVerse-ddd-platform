@@ -15,8 +15,4 @@
     <ProjectReference Include="..\..\CatalogService.Domain\CatalogService.Domain\Catalog.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Products\Queries\" />
-  </ItemGroup>
-
 </Project>

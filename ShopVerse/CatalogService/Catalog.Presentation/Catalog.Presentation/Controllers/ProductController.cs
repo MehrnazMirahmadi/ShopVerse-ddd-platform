@@ -1,9 +1,11 @@
 ﻿using Catalog.Application.Dtos;
 using Catalog.Application.Products.Commands.CreateProduct;
 using Catalog.Application.Products.Commands.UpdateProduct;
+using Catalog.Application.Products.Queries;
 using Catalog.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ShopVerse.BuildingBlocks.Paging;
 
 namespace Catalog.Presentation.Controllers;
 
@@ -48,5 +50,14 @@ public class ProductController : ControllerBase
             return NotFound(result.ErrorMessage);
 
         return Ok(result);
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts([FromQuery] PaginationRequest paging, CancellationToken cancellationToken)
+    {
+        var query = new GetAllProductsQuery(paging);
+        var result = await _sender.Send(query, cancellationToken);
+        if (!result.IsSuccess)
+            return BadRequest(result.Message);
+        return Ok(result.Value);
     }
 }

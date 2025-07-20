@@ -17,7 +17,6 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
         {
             // Pass the whole DTO and cancellation token from request
             var id = await _productService.CreateProductAsync(request.ProductDto, cancellationToken);
-
             return new CreateProductResult(true, id.Value);
         }
         catch (Exception ex)

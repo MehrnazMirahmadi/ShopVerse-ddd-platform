@@ -139,4 +139,11 @@ public class InventoryItemRepository
         }
     }
 
+    public Task<int> GetProductQuantityAsync(Guid productId, CancellationToken cancellationToken = default)
+    {
+        return _db.InventoryItems
+            .Where(x => x.ProductId == productId)
+            .Select(x => x.Quantity)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }

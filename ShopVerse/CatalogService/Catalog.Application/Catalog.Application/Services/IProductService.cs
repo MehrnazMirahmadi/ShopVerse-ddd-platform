@@ -10,4 +10,5 @@ public interface IProductService
     Task<Product?> GetByIdAsync(ProductId id, CancellationToken cancellationToken);
     Task UpdateProductAsync(Product product, UpdateProductDto dto, CancellationToken cancellationToken);
     Task DeleteProductAsync(ProductId id, CancellationToken cancellationToken);
+
 }

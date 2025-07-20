@@ -1,16 +1,14 @@
-﻿using Application.Contracts;
-using Application.Factories;
+﻿using Application.Factories;
 using Application.GrpcInterface;
 using Domain.Contract;
 using Domain.Entities;
 using Domain.ValueObjects;
-using Mapster;
 using MassTransit;
-using ShopVerse.BuildingBlocks.Messaging.Events;
 
 namespace Application.Sales.CheckoutOrder;
 
-public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)
+public class CheckoutOrderCommandHandler
+    (IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork, IInventoryServiceClient inventoryClient)
     : ICommandHandler<CheckoutOrderCommandRequest, CheckoutOrderCommandResponse>
 {
     public async Task<CheckoutOrderCommandResponse> Handle(CheckoutOrderCommandRequest request, CancellationToken cancellationToken)
@@ -84,14 +82,14 @@ public class CheckoutOrderCommandHandler(IPublishEndpoint publishEndpoint, IUnit
 
         order.SetOrderItems(orderItems);
 
-      
+
         await unitOfWork.OrderRepository.AddOrderAsync(order, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-       
+
         var eventMessage = OrderCheckoutEventFactory.Create(order);
         await publishEndpoint.Publish(eventMessage, cancellationToken);
-        
+
 
         return new CheckoutOrderCommandResponse(true, null, order.Id.Value.ToString());
 
