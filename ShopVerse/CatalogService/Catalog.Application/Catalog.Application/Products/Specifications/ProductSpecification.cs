@@ -8,6 +8,8 @@ public class ProductSpecification : BaseSpecification<Product>
 {
     public ProductSpecification(PaginationRequest paging)
     {
+        AddInclude(p => p.Features);
+        AddInclude(p => p.Media);
         if (!string.IsNullOrWhiteSpace(paging.FilterName))
             AddCriteria(x => x.Name.Contains(paging.FilterName));
         if (paging.SortByQuantityDesc)
