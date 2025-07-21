@@ -13,13 +13,22 @@ public class UpdateProductCommandHandler
     }
     public async Task<UpdateProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _productService.GetByIdAsync(request.ProductId, cancellationToken);
-        if (product == null)
-            return UpdateProductResult.Failure("Product not found");
+        try
+        {
+            var product = await _productService.GetByIdAsync(request.ProductId, cancellationToken);
+            if (product == null)
+                return UpdateProductResult.Failure("Product not found");
 
-        await _productService.UpdateProductAsync(product, request.UpdateDto, cancellationToken);
-        return UpdateProductResult.Success(request.ProductId);
+            await _productService.UpdateProductAsync(product, request.UpdateDto, cancellationToken);
+            return UpdateProductResult.Success(request.ProductId);
+        }
+        catch (Exception ex)
+        {
+           
+            return UpdateProductResult.Failure(ex.Message);
+        }
     }
+
 
 }
 
