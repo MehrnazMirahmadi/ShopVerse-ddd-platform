@@ -23,7 +23,7 @@ public static class ProductMapper
 
             Features = product.Features.Select(f => new ProductFeatureDto
             {
-                FeatureName = f.FeatureValue,  // Adjust these property names as per your entity
+                FeatureName = f.FeatureValue,  
                 FeatureValue = f.FeatureValue
             }).ToList(),
 

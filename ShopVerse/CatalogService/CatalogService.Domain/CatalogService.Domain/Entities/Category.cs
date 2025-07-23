@@ -10,7 +10,7 @@ public class Category : Aggregate<CategoryId>
 
     private readonly List<Category> _children = new();
     public IReadOnlyCollection<Category> Children => _children.AsReadOnly();
-
+    private Category() { }
     private Category(CategoryId id, string name, CategoryId? parentId)
     {
         Id = id;

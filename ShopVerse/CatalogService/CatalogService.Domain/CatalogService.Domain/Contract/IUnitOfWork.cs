@@ -5,6 +5,7 @@ namespace Catalog.Domain.Contract;
 public interface IUnitOfWork
 {
     IProductRepository ProductRepository { get; }
+    ICategoryRepository CategoryRepository { get; }
     //----------------------------------------------------------------
     bool HasActiveTransaction { get; }
     Task BeginTransactionAsync();

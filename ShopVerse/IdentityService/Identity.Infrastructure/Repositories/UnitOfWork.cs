@@ -1,24 +1,28 @@
-﻿using Catalog.Domain.Contract;
-using Catalog.Domain.Contract.Repositories;
-using Catalog.Infrastructure.Persistence.Context;
+﻿using Identity.Application.Interfaces;
+using Identity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace Identity.Infrastructure.Repositories;
 
-public class UnitOfWork(CatalogDbContext context
-    , IProductRepository productRepository
-    ,ICategoryRepository categoryRepository)
-    : IUnitOfWork, IDisposable
+public class UnitOfWork(IdentityDbContext context
+    )
+   : IUnitOfWork, IDisposable
 {
     private IDbContextTransaction? _transaction;
-    public IProductRepository ProductRepository => productRepository;
-    public ICategoryRepository CategoryRepository => categoryRepository;
+
+
+   
     public bool HasActiveTransaction => _transaction != null;
+
 
     public async Task BeginTransactionAsync()
     {
-        if (_transaction == null)
-            _transaction = await context.Database.BeginTransactionAsync();
+        _transaction ??= await context.Database.BeginTransactionAsync();
     }
 
     public void Commit()
@@ -59,6 +63,7 @@ public class UnitOfWork(CatalogDbContext context
     public void Dispose()
     {
         _transaction?.Dispose();
-        context.Dispose();
     }
 }
+
+
