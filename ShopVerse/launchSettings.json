@@ -9,7 +9,8 @@
         "inventory.grpc": "StartDebugging",
         "finance.presentation": "StartDebugging",
         "catalog.presentation": "StartDebugging",
-        "productinventory.grpc": "StartDebugging"
+        "productinventory.grpc": "StartDebugging",
+        "identity.presentation": "StartDebugging"
       }
     }
   }

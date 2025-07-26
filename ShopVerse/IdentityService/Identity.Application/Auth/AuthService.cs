@@ -24,6 +24,18 @@ public class AuthService : IAuthService
         _jwtTokenGenerator = jwtTokenGenerator;
     }
 
+    public async Task AssignRoleAsync(AssignRoleDto dto)
+    {
+        var user = await _userRepository.GetByEmailAsync(dto.Email)
+            ?? throw new Exception("User not found.");
+
+        var role = await _roleRepository.GetByNameAsync(dto.RoleName)
+            ?? throw new Exception("Role not found.");
+
+        user.AddRole(role.Id);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
     public async Task<AuthResultDto> LoginAsync(LoginRequestDto request)
     {
         var existUser = await _userRepository.GetByEmailAsync(request.Email);

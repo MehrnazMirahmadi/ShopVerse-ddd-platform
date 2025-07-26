@@ -180,12 +180,36 @@ services:
    
 
 
+  identity.presentation:
+    image: ${DOCKER_REGISTRY-}identitypresentation
+    build:
+      context: .
+      dockerfile: IdentityService/Identity.Presentation/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8092
+      - ASPNETCORE_HTTPS_PORTS=8093
+      - ConnectionStrings__Database=Server=sqlserver;Database=IdentityDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True;
+    depends_on:
+      - sqlserver
+    ports:
+      - "5203:8092"
+      - "7118:8093"
+    networks:
+      - appnet
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
 networks:
   appnet:
     driver: bridge
 
 volumes:
   pgdata:
+
 
 
 
