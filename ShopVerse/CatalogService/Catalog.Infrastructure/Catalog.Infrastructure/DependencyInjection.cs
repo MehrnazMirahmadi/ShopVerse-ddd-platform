@@ -4,9 +4,12 @@ using Catalog.Domain.Contract.Repositories;
 using Catalog.Infrastructure.Persistence;
 using Catalog.Infrastructure.Persistence.Context;
 using Catalog.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Catalog.Infrastructure;
 
@@ -30,6 +33,24 @@ public static class DependencyInjection
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                     .AddJwtBearer(options =>
+                         {
+                             options.RequireHttpsMetadata = false; // only for local dev
+                             options.SaveToken = true;
+                             options.TokenValidationParameters = new TokenValidationParameters
+                             {
+                                 ValidateIssuer = true,
+                                 ValidateAudience = true,
+                                 ValidateLifetime = true,
+                                 ValidateIssuerSigningKey = true,
+                                 ValidIssuer = jwtSettings["Issuer"],      // "ShopVerse.Identity"
+                                 ValidAudience = jwtSettings["Audience"],  // "ShopVerse.Users"
+                                 IssuerSigningKey = new SymmetricSecurityKey(
+                                     Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
+                             };
+                         });
 
         return services;
     }

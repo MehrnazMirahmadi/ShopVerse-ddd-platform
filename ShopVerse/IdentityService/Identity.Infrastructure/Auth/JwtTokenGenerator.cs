@@ -18,15 +18,18 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     }
     public string GenerateToken(User user, List<string> roles)
     {
-       var claims = new List<Claim>()
-       {
-           new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-           new Claim(JwtRegisteredClaimNames.Email, user.Email)
-       };
+        var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email)
+    };
+
+        //  Add role claims BEFORE generating the token
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
         var token = new JwtSecurityToken(
             issuer: _settings.Issuer,
             audience: _settings.Audience,
@@ -37,4 +40,5 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 }

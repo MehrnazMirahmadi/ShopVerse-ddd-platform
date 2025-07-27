@@ -4,6 +4,7 @@ using Catalog.Application.Products.Commands.UpdateProduct;
 using Catalog.Application.Products.Queries;
 using Catalog.Domain.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopVerse.BuildingBlocks.Paging;
 
@@ -60,4 +61,11 @@ public class ProductController : ControllerBase
             return BadRequest(result.Message);
         return Ok(result.Value);
     }
+    [Authorize(Roles = "Admin")]
+    [HttpGet("secure-data")]
+    public IActionResult GetSecureData()
+    {
+        return Ok("Only logged-in users can access this.");
+    }
+
 }

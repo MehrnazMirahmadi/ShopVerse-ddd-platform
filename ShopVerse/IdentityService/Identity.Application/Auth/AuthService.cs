@@ -1,6 +1,7 @@
 ﻿using Identity.Application.Dtos;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Application.Auth;
 
@@ -44,7 +45,7 @@ public class AuthService : IAuthService
             throw new ArgumentException("Invalid email or password.");
 
         var roles = existUser.UserRoles.Select(ur => ur.Role.Name).ToList();
-
+       
         var token = _jwtTokenGenerator.GenerateToken(existUser, roles);
 
         return new AuthResultDto
