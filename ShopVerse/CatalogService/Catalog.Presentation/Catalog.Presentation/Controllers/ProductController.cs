@@ -61,11 +61,18 @@ public class ProductController : ControllerBase
             return BadRequest(result.Message);
         return Ok(result.Value);
     }
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "VerifiedOnly")]
     [HttpGet("secure-data")]
     public IActionResult GetSecureData()
-    {
+    { 
         return Ok("Only logged-in users can access this.");
+    }
+
+    [Authorize(Policy = "AdminOnly")]
+    [HttpGet("admin-data")]
+    public IActionResult GetAdminData()
+    {
+        return Ok("You are an Admin!");
     }
 
 }

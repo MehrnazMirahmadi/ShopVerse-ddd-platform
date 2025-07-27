@@ -51,7 +51,15 @@ public static class DependencyInjection
                                      Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
                              };
                          });
+        //  Add Authorization policies
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("VerifiedOnly", policy =>
+                policy.RequireClaim("IsVerified", "true"));
 
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole("Admin"));
+        });
         return services;
     }
 }

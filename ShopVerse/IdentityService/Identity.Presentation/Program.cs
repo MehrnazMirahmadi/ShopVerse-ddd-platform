@@ -16,15 +16,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//  JWT Settings
-//  Load JwtSettings from configuration
+// 1. Load JwtSettings from configuration
 var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettingsSection);
 
-//  Bind the section to an instance
+// 2. Bind to an instance (if you need it elsewhere)
 var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
 
-//  Setup JWT Authentication using instance values
+// 3. Add Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -34,11 +33,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings.Issuer, 
-            ValidAudience = jwtSettings.Audience, 
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)) 
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
         };
     });
+
+// 4. Add Authorization + Policies 
+builder.Services.AddAuthorization(options =>
+      {
+          options.AddPolicy("VerifiedOnly", policy =>
+              policy.RequireClaim("IsVerified", "true"));
+      
+          options.AddPolicy("AdminOnly", policy =>
+              policy.RequireRole("Admin"));
+      });
+
 //  Repositories & Services
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
