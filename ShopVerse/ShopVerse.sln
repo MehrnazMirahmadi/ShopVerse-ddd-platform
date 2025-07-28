@@ -98,6 +98,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Application", "Ide
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Presentation", "IdentityService\Identity.Presentation\Identity.Presentation.csproj", "{58E2B2AA-A200-4953-8EC9-CA464B1EA51E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{B4C02FB8-DA87-486A-B7C4-B81CC82071D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.IdentityServer.Domain", "IdentityServer\IdentityServer.Domain\ShopVerse.IdentityServer.Domain\ShopVerse.IdentityServer.Domain.csproj", "{D6798D5B-B96E-4853-93D8-1455778DBB9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.IdentityServer.Application", "IdentityServer\IdentityServer.Application\ShopVerse.IdentityServer.Application\ShopVerse.IdentityServer.Application.csproj", "{C8135659-DA20-43F9-9F22-4AE224FDDA68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.IdentityServer.Infrastructure", "InventoryService\IdentityServer.Infrastructure\ShopVerse.IdentityServer.Infrastructure\ShopVerse.IdentityServer.Infrastructure.csproj", "{AECE1254-C27C-4B4A-8D12-049A13BA62CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopVerse.IdentityServer.Api", "IdentityServer\IdentityServer.Api\ShopVerse.IdentityServer.Api\ShopVerse.IdentityServer.Api.csproj", "{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +246,22 @@ Global
 		{58E2B2AA-A200-4953-8EC9-CA464B1EA51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58E2B2AA-A200-4953-8EC9-CA464B1EA51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58E2B2AA-A200-4953-8EC9-CA464B1EA51E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6798D5B-B96E-4853-93D8-1455778DBB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6798D5B-B96E-4853-93D8-1455778DBB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6798D5B-B96E-4853-93D8-1455778DBB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6798D5B-B96E-4853-93D8-1455778DBB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8135659-DA20-43F9-9F22-4AE224FDDA68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8135659-DA20-43F9-9F22-4AE224FDDA68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8135659-DA20-43F9-9F22-4AE224FDDA68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8135659-DA20-43F9-9F22-4AE224FDDA68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AECE1254-C27C-4B4A-8D12-049A13BA62CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECE1254-C27C-4B4A-8D12-049A13BA62CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECE1254-C27C-4B4A-8D12-049A13BA62CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECE1254-C27C-4B4A-8D12-049A13BA62CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -280,6 +306,10 @@ Global
 		{CC432E50-E018-4D80-9300-5C06ABD36A93} = {AAE4A027-56F6-4551-9C49-46F3054190DC}
 		{21F177AA-3C58-4853-8F03-75861E5C1AFC} = {AAE4A027-56F6-4551-9C49-46F3054190DC}
 		{58E2B2AA-A200-4953-8EC9-CA464B1EA51E} = {AAE4A027-56F6-4551-9C49-46F3054190DC}
+		{D6798D5B-B96E-4853-93D8-1455778DBB9C} = {B4C02FB8-DA87-486A-B7C4-B81CC82071D5}
+		{C8135659-DA20-43F9-9F22-4AE224FDDA68} = {B4C02FB8-DA87-486A-B7C4-B81CC82071D5}
+		{AECE1254-C27C-4B4A-8D12-049A13BA62CF} = {B4C02FB8-DA87-486A-B7C4-B81CC82071D5}
+		{4DB6A0D7-64F7-4D72-89FA-B03BE84253EA} = {B4C02FB8-DA87-486A-B7C4-B81CC82071D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D54F8DE2-4AC3-4BB4-9DF8-5BF75F715D84}

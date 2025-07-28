@@ -1,0 +1,6 @@
+@ShopVerse.IdentityServer.Api_HostAddress = http://localhost:5016
+
+GET {{ShopVerse.IdentityServer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

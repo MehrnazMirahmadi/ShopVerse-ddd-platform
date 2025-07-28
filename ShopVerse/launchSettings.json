@@ -10,7 +10,8 @@
         "finance.presentation": "StartDebugging",
         "catalog.presentation": "StartDebugging",
         "productinventory.grpc": "StartDebugging",
-        "identity.presentation": "StartDebugging"
+        "identity.presentation": "StartDebugging",
+        "shopverse.identityserver.api": "StartDebugging"
       }
     }
   }
