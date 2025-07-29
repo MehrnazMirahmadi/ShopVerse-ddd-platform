@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Extentions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Presentation;
 //using Inventory.Presentation.GrpcServices;
 
@@ -12,11 +14,42 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddHealthChecks()
-//    .AddSqlServer(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://shopverse.identityserver.api:8095";
+        options.Audience = "inventory-api";
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://shopverse.identityserver.api:8095", 
+            ValidateAudience = false
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"Token failed: {ctx.Exception.Message}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = ctx =>
+            {
+                Console.WriteLine("Token validated successfully.");
+                return Task.CompletedTask;
+            },
+            OnChallenge = ctx =>
+            {
+                Console.WriteLine("Unauthorized challenge.");
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+
+
+
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -26,6 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

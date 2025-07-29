@@ -1,16 +1,13 @@
-﻿using Duende.IdentityServer.Models;
-using System.Collections.Generic;
+﻿// ApiScopes.cs
+using Duende.IdentityServer.Models;
 
-namespace ShopVerse.IdentityServer.Api.Configuration
+namespace ShopVerse.IdentityServer.Api.Configuration;
+
+public static class ApiScopes
 {
-    public static class ApiScopes
-    {
-        public static IEnumerable<ApiScope> GetApiScopes()
+    public static IEnumerable<ApiScope> GetApiScopes() =>
+        new List<ApiScope>
         {
-            return new List<ApiScope>
-            {
-                new ApiScope("shopverse_api", "ShopVerse API")
-            };
-        }
-    }
+            new ApiScope("inventory-api", "Inventory API")
+        };
 }

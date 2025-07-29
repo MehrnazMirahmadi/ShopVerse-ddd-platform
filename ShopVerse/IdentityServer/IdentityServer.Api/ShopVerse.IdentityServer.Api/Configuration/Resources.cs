@@ -1,18 +1,17 @@
-﻿using Duende.IdentityServer.Models;
-using System.Collections.Generic;
+﻿// ApiResources.cs
+using Duende.IdentityServer.Models;
 
-namespace ShopVerse.IdentityServer.Api.Configuration
+namespace ShopVerse.IdentityServer.Api.Configuration;
+
+public static class ApiResources
 {
-    public static class Resources
-    {
-        public static IEnumerable<IdentityResource> GetIdentityResources()
+    public static IEnumerable<ApiResource> GetApiResources() =>
+        new List<ApiResource>
         {
-            return new List<IdentityResource>
+           new ApiResource("inventory-api", "Inventory API")
             {
-                new IdentityResources.OpenId(),   // required
-                new IdentityResources.Profile(),  // includes standard profile info like name, email
-                // Add more identity resources if needed
-            };
-        }
-    }
+                Scopes = { "inventory-api" },
+                ApiSecrets = { new Secret("secret".Sha256()) }
+            }
+        };
 }
