@@ -9,8 +9,5 @@ public class Role : Aggregate<Guid>
 
     protected Role() { }
 
-    public Role(string name)
-    {
-        Name = name;
-    }
+    public Role(string name) => Name = name;
 }
