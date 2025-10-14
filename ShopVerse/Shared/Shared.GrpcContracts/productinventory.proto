@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Inventory.Grpc";
+
+package inventory;
+
+// Request: client sends a list of product IDs
+message ProductInventoryRequest {
+  repeated string productIds = 1;
+}
+
+// Response for one product
+message ProductInventoryResponseItem {
+  string productId = 1;
+  int32 availableQuantity = 2;
+}
+
+// Response: list of quantities for products
+message ProductInventoryResponse {
+  repeated ProductInventoryResponseItem items = 1;
+}
+
+// The gRPC service
+service ProductInventoryService {
+  rpc GetAvailableQuantities (ProductInventoryRequest) returns (ProductInventoryResponse);
+}

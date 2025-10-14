@@ -1,13 +1,14 @@
 ﻿using Application.Inventory.Commands.UpdateInventoryItem;
 using Application.Inventory.Queries.CheckInvetoryAvailability;
 using Application.Inventory.Queries.GetInventoryItems;
+using Microsoft.AspNetCore.Authorization;
 using ShopVerse.BuildingBlocks.Paging;
 
 [ApiController]
 [Route("api/[controller]")]
 public class InventoryItemsController(ISender sender) : ControllerBase
 {
-    
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll(
     [FromQuery] PaginationRequest paging,
